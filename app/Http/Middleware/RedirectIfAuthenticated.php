@@ -6,8 +6,7 @@ use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class RedirectIfAuthenticated
-{
+class RedirectIfAuthenticated {
     /**
      * Handle an incoming request.
      *
@@ -16,10 +15,12 @@ class RedirectIfAuthenticated
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
-    {
-        if (Auth::guard($guard)->check()) {
-            return redirect(RouteServiceProvider::HOME);
+    public function handle($request, Closure $next, $guard = null) {
+        // if (Auth::guard($guard)->check()) {
+        if (auth()->check() && auth()->user()->user_type == "guru") {
+            return redirect('guru');
+        } else if (auth()->check() && auth()->user()->user_type == "siswa") {
+            return redirect('siswa');
         }
 
         return $next($request);
