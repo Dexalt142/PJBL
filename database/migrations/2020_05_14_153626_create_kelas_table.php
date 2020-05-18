@@ -15,8 +15,8 @@ class CreateKelasTable extends Migration {
             $table->id();
             $table->string("kode_kelas", 50)->unique();
             $table->string("nama");
-            $table->string("kode_undangan", 50)->unique();
-            $table->unsignedBigInteger("guru_id")->unique();
+            $table->string("kode_undangan", 50)->unique()->nullable();
+            $table->unsignedBigInteger("guru_id");
             $table->foreign("guru_id")->references("id")->on("guru");
             $table->timestamps();
         });
