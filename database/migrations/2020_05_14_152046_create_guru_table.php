@@ -16,6 +16,7 @@ class CreateGuruTable extends Migration {
             $table->string("nip", 50)->unique();
             $table->string("nama_lengkap");
             $table->date("tanggal_lahir");
+            $table->string('jenis_kelamin', 1);
             $table->string("alamat");
             $table->string("agama", 50);
             $table->unsignedBigInteger("user_id")->unique();
