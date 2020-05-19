@@ -36,4 +36,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function detail() {
+        if($this->user_type == "guru")  {
+            return $this->hasOne('App\Guru');
+        } else if($this->user_type == "siswa")  {
+            return $this->hasOne('App\Siswa');
+        }
+    }
 }
