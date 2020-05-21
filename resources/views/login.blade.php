@@ -8,15 +8,15 @@ PJBL &middot; Login
     <div class="container">
         <div class="row mt-5">
             <div class="col-md-7 mb-4">
-                <img src="{{ asset('assets/img/illustration_1.jpg') }}" alt="Illustration 1" class="w-100">
-                <div>
-                    <h1>Project Based Learning</h1>
-                    <h6>Aplikasi pembelajaran project based learning berbasis web</h6>
+                <div class="text-center">
+                    <img src="{{ asset('assets/img/illustration_1.png') }}" alt="Illustration 1" class="w-75">
+                    <h1 class="f-w-700">Project Based Learning</h1>
+                    <h6>Aplikasi pembelajaran project based learning berbasis web nomor 1 di UPI.</h6>
                 </div>
             </div>
 
             <div class="col-md-5 mb-4">
-                <div class="card bg-light">
+                <div class="card">
                     <div class="card-body py-5">
                         <h3 class="card-title text-center font-weight-bold">
                             Login
@@ -26,7 +26,7 @@ PJBL &middot; Login
                                 @csrf
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Email" value="{{ old('email') }}" required>
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Email" value="{{ old('email') }}" autofocus required>
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
