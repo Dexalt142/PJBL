@@ -31,17 +31,32 @@ Route::middleware('guest')->group(function() {
 });
 
 Route::middleware('auth')->group(function() {
-    Route::get('home', function() {
-        return view('logout');
-    });
-
+    Route::get('profile-setup', 'Auth\ProfileController@showSetupPage')->name('profile-setup');
+    Route::post('profile-setup', 'Auth\ProfileController@setupProfile');
     Route::post('logout', 'Auth\LoginController@logout');
 });
 
-Route::middleware('guru')->group(function() {
+
+Route::middleware('guru', 'user-validated')->group(function() {
     Route::get('guru', function() {
-        echo "Test";
+        return view('guru.dashboard');
+    })->name('guru-dashboard');
+
+    Route::prefix('guru')->group(function() {
+        Route::post('kelas/buat', 'KelasController@buatKelas');
+        Route::get('kelas/{kelas}', 'GuruPageController@viewKelas')->name('kelas-detail');
+        Route::post('kelas/edit/{kelas}', 'KelasController@editKelas');
+        
+        Route::post('kelas/gencode/{kelas}', 'KelasController@generateNewCode');
+
+        Route::post('project/buat', 'ProjectController@buatProject');
     });
+});
+
+Route::middleware('siswa', 'user-validated')->group(function() {
+    Route::get('siswa', function() {
+        return view('siswa.dashboard');
+    })->name('siswa-dashboard');
 });
 
 

@@ -4,6 +4,21 @@
     {{ $kelas->nama }}
 @endsection
 
+@section('page-header')
+    {{ $kelas->nama }}
+    <div class="dropdown d-inline-block">
+        <button class="btn btn-link dropdown-toggle" type="button" id="kelasMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Pengaturan
+        </button>
+        <div class="dropdown-menu" aria-labelledby="kelasMenuButton">
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editKelasModal">Edit</a>
+            <a class="dropdown-item" href="#" id="generateKodeKelas">Generate Kode</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Hapus</a>
+        </div>
+    </div>
+@endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ url('/') }}">Dashboard</a></li>
     <li class="breadcrumb-item active">Kelas</li>
@@ -108,4 +123,58 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="editKelasModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit kelas</h5>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url("/guru/kelas/edit/$kelas->kode_kelas") }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="nama_kelas">Nama kelas</label>
+                        <input type="text" class="form-control @error('nama_kelas') is-invalid @enderror" name="nama_kelas" placeholder="Nama kelas" value="{{ $kelas->nama }}" required>
+                        @error('nama_kelas')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+    @if ($errors->any())
+        <script>
+            $("#editKelasModal").modal('show');
+        </script>
+    @endif
+
+    <script>
+        $("#generateKodeKelas").on('click', function() {
+            $.ajax({
+                url: '{{ url("guru/kelas/gencode/$kelas->kode_kelas") }}',
+                method: 'POST',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "kode_kelas": '{{ $kelas->kode_kelas }}',
+                },
+                success: function(response) {
+                    if(response.success == 'true') {
+                        window.location.href = '{{ url("guru/kelas") }}' + '/' + response.kode_kelas;
+                    }
+                }
+            });
+        });
+    </script>
 @endsection
