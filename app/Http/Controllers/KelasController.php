@@ -32,7 +32,7 @@ class KelasController extends Controller {
         $k->nama = $validated['nama_kelas'];
 
         if($k->save()) {
-            return redirect()->route('kelas-detail', $kelas);
+            return redirect()->route('guru-kelas-detail', $kelas);
         }
     }
 
