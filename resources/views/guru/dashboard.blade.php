@@ -1,6 +1,7 @@
 @extends('layouts.guru')
 
 @section('page-title', 'Dashboard')
+@section('page-header', 'Dashboard')
 
 @section('breadcrumb')
     <li class="breadcrumb-item active">Dashboard</li>
@@ -40,57 +41,53 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-header">
-                            <div class="card-title">
-                                Kelas anda
-                            </div>
-                            <div class="card-menu">
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#createKelasModal">Buat kelas</button>
-                            </div>
-                        </div>
-                        <div class="row row-kelas">
-
-                            @forelse (auth()->user()->detail->kelas as $kelas)
-                            <div class="col-md-6 col-lg-4 mb-4 card-wrapper">
-                                <div class="card-kelas" kelas-target="{{ $kelas->kode_kelas }}">
-                                    <div class="card-body">
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-md-4">Kode Kelas</div>
-                                                <div class="col-md-8">: <span class=" f-w-700">{{ $kelas->kode_kelas }}</span></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4">Jumlah Siswa</div>
-                                                <div class="col-md-8">: <span class=" f-w-700">{{ $kelas->siswa->count() }}</span></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4">Jumlah Proyek</div>
-                                                <div class="col-md-8">: <span class=" f-w-700">{{ $kelas->project->count() }}</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card-footer">
-                                        <div class="card-title">
-                                            {{ $kelas->nama }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @empty
-                            {{ "Anda belum memiliki kelas" }}
-                            @endforelse
-                            
-                        </div>
-
-                    </div>
+        <section class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    Kelas anda
+                </div>
+                <div class="section-menu">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#createKelasModal">Buat kelas</button>
                 </div>
             </div>
-        </div>
+            <div class="row row-kelas">
+
+                @forelse (auth()->user()->detail->kelas as $kelas)
+                    @component('component.guru.card-kelas')
+                        @slot('kode_kelas', $kelas->kode_kelas)
+                        @slot('nama_kelas', $kelas->nama)
+                        @slot('jumlah_siswa', $kelas->siswa->count())
+                        @slot('jumlah_project', $kelas->project->count())
+                    @endcomponent
+                @empty
+                {{ "Anda belum memiliki kelas" }}
+                @endforelse
+                
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    Project
+                </div>
+                <div class="section-menu">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#createKelasModal">Buat project</button>
+                </div>
+            </div>
+
+            <div class="row">
+                @foreach ($projects as $project)
+                    @component('component.guru.card-project')
+                        @slot('id_project', $project->id)
+                        @slot('nama_project', $project->nama_project)
+                        @slot('nama_kelas', $project->kelas->nama)
+                        @slot('tanggal_pembuatan', $project->created_at)
+                        @slot('jumlah_kelompok', $project->kelompok->count())
+                    @endcomponent
+                @endforeach
+            </div>
+        </section>
     </div>
 
     <div class="modal fade" id="createKelasModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">

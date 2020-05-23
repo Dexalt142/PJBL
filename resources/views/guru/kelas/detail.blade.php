@@ -20,45 +20,40 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ url('/') }}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('guru-dashboard') }}">Dashboard</a></li>
     <li class="breadcrumb-item active">Kelas</li>
 @endsection
 
 @section('content')
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-header">
-                            <div class="card-title">Project Kelas</div>
-                            <div class="card-menu">
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#createProjectModal">Buat project</button>
-                            </div>
-                        </div>
 
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama project</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($kelas->project as $project)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $project->nama_project }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+        <section class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    Project kelas
+                </div>
+                <div class="section-menu">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#createProjectModal">Buat project</button>
                 </div>
             </div>
+            <div class="row">
+                @forelse ($kelas->project as $project)
+                    @component('component.guru.card-project')
+                        @slot('id_project', $project->id)
+                        @slot('nama_project', $project->nama_project)
+                        @slot('nama_kelas', $project->kelas->nama)
+                        @slot('tanggal_pembuatan', $project->created_at)
+                        @slot('jumlah_kelompok', $project->kelompok->count())
+                    @endcomponent
+                @empty
+                    <div class="col-12">
+                        Belum ada project saat ini.
+                    </div>
+                @endforelse
+            </div>
+        </section>
 
+        <div class="row">
             <div class="col-md-12 mb-4">
                 <div class="card">
                     <div class="card-body">
@@ -103,7 +98,7 @@
             <div class="modal-body">
                 <form action="{{ url('/guru/project/buat') }}" method="POST">
                     @csrf
-                    <input type="hidden" name="r" value="{{ route('kelas-detail', $kelas->kode_kelas) }}">
+                    <input type="hidden" name="r" value="{{ route('guru-kelas-detail', $kelas->kode_kelas) }}">
                     <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">
                     <div class="form-group">
                         <label for="nama_kelas">Nama project</label>
