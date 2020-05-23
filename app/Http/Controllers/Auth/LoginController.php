@@ -39,8 +39,8 @@ class LoginController extends Controller {
     public function authenticated($request , $user){
         if($user->user_type == 'guru'){
             return redirect('guru');
-        }elseif($user->user_type == 'siswa'){
+        } else if($user->user_type == 'siswa'){
             return redirect('siswa');
+        }
     }
-}
 }
