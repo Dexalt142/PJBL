@@ -1,10 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600700;900&display=swap');
 
 body {
     font-family: "Nunito";
-    background-color: #f6f7f9;
+    background-color: #f4f7fd;
+}
+
+.material-icons {
+    vertical-align: middle;
 }
 
 .form-check-label {
@@ -79,11 +83,11 @@ body {
     left: 0;
     right: 0;
     height: 70px;
-    /* background-color: #f6f7f9; */
+    background-color: #FFF;
     padding: 1rem 0;
     z-index: 1000;
     transition: left .25s ease;
-    /* box-shadow: 0px 5px 10px rgba(0, 0, 0, .05); */
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, .05);
 }
 
 .top-navigation.shrink {
@@ -92,7 +96,7 @@ body {
 
 .sidebar {
     position: fixed;
-    background-color: #FFF;
+    background-color: #21252b;
     width: 250px;
     top: 0;
     bottom: 0;
@@ -108,7 +112,7 @@ body {
 
 .sidebar .sidebar-header {
     height: 70px;
-    background: #1a242d;
+    /* background: #1a242d; */
     text-align: center;
     line-height: 70px;
 }
@@ -136,25 +140,23 @@ body {
     height: 45px;
     line-height: 45px;
     font-weight: 600;
-    padding: .1rem 1rem;
     margin-top: 10px;
     margin-bottom: 10px;
-    border-radius: 1rem;
-    transition: .25s ease;
 }
 
 .sidebar-item a {
+    padding: .1rem 1rem;
+    display: block;
     transition: .25s ease;
-    color: #1a242d;
+    color: #FFF;
     text-decoration: none;
-}
-
-.sidebar-item:hover {
-    background-color: #1a242d;
+    border-radius: 1rem;
 }
 
 .sidebar-item:hover a {
-    color: #FFF;
+    padding-left: 2rem;
+    background-color: #FFF;
+    color: #21252b;
 }
 
 
@@ -207,6 +209,7 @@ body {
 }
 
 .row-kelas .card-kelas {
+    background-color: #FFF;
     border-radius: 1rem;
     position: relative;
     overflow: hidden;
@@ -215,22 +218,34 @@ body {
 }
 
 .card-kelas .card-body  {
-    margin-bottom: 2rem;
+    /* margin-bottom: 2rem; */
 }
 
 .card-kelas .card-footer {
-    position: absolute;
+    padding: 5px 0;
+    position: relative;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 25%;
-    line-height: 100%;
-    display: flex;
-    justify-content: center;
     border: none;
-    align-items: center;
     transition: .25s ease;
     z-index: 999;
+}
+
+.card-kelas .card-footer .card-information {
+    color: #FFF;
+    text-align: center;
+}
+
+.card-information .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: -5px;
+}
+
+.card-information .subtitle {
+    font-weight: 300;
 }
 
 .card-kelas .card-footer .card-title {
@@ -296,3 +311,28 @@ body {
     
 }
 
+.section {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.section-header {
+    margin-top: -10px;
+    margin-bottom: .75rem;
+    background: none;
+    padding: 0;
+    border: none;
+    display: flex;
+    height: 50px;
+    line-height: 50px;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.section-menu {
+    font-size: 1.25rem;
+    margin-left: auto;
+}
