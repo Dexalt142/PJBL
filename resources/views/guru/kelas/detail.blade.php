@@ -53,7 +53,53 @@
             </div>
         </section>
 
-        <div class="row">
+        <section class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    Daftar Siswa
+                </div>
+                <div class="section-menu">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#inviteStudentModal">Undang Siswa</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>NIS</th>
+                                            <th>Nama</th>
+                                            <th>Tanggal Lahir</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($kelas->siswa as $siswa)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $siswa->nis }}</td>
+                                                <td>{{ $siswa->nama_lengkap }}</td>
+                                                <td>{{ Carbon\Carbon::parse($siswa->tanggal_lahir)->format("d M Y") }}</td>
+                                                <td>{{ ($siswa->jenis_kelamin == 1) ? 'Laki-laki' : 'Perempuan' }}</td>
+                                                <td><button class="btn btn-sm btn-danger">Hapus</button></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        {{-- <div class="row">
             <div class="col-md-12 mb-4">
                 <div class="card">
                     <div class="card-body">
@@ -86,7 +132,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 
     <div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -113,6 +159,36 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-link" data-dismiss="modal">Tutup</button>
                 <button type="submit" class="btn btn-primary">Buat project</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="inviteStudentModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Undang siswa</h5>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url("/guru/kelas/$kelas->kode_kelas/undang") }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="r" value="{{ route('guru-kelas-detail', $kelas->kode_kelas) }}">
+                    <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">
+                    <div class="form-group">
+                        <label for="nama_kelas">Email siswa</label>
+                        <input type="email" class="form-control @error('email_siswa') is-invalid @enderror" name="email_siswa" placeholder="Email siswa" value="{{ old('email_siswa') }}" required>
+                        @error('email_siswa')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Undang</button>
                 </form>
             </div>
             </div>

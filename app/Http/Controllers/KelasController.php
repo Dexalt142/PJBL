@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Kelas;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class KelasController extends Controller {
     
@@ -49,6 +52,28 @@ class KelasController extends Controller {
         } else {
             return response()->json(['success' => 'false']);
         }
+    }
+
+    public function undangSiswa(Request $request) {
+        $validated = $request->validate([
+            'email_siswa' => ['required', 'email'],
+            'kelas_id' => ['integer']
+        ]);
+
+        $siswa = User::where(['email' => $validated['email_siswa'], 'user_type' => 'siswa'])->first();
+        if($siswa) {
+            if(!Kelas::find($validated['kelas_id'])->siswa->contains('id', $siswa->detail->id)) {
+                $save = DB::table('kelas_siswa')->insert(['kelas_id' => $validated['kelas_id'], 'siswa_id' => $siswa->detail->id, 'tanggal_masuk' => Carbon::now()->toDateTimeString()]);
+                if($save) {
+                    return redirect()->to($request->r);
+                }
+            } else {
+                return redirect()->to($request->r)->withErrors(['siswa_406', 'Siswa sudah berada di dalam kelas']);
+            }
+        } else {
+            return redirect()->to($request->r)->withErrors(['siswa_404', 'Siswa tidak ditemukan']);
+        }
+        
     }
 
 }
