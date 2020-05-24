@@ -13,6 +13,7 @@ class CreateKelompokTable extends Migration {
     public function up() {
         Schema::create('kelompok', function (Blueprint $table) {
             $table->id();
+            $table->string("nama_kelompok")->nullable();
             $table->integer("jumlah_anggota");
             $table->timestamps();
         });
