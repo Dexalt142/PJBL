@@ -14,7 +14,8 @@ class CreateKelompokTable extends Migration {
         Schema::create('kelompok', function (Blueprint $table) {
             $table->id();
             $table->string("nama_kelompok")->nullable();
-            $table->integer("jumlah_anggota");
+            $table->unsignedBigInteger("project_id");
+            $table->foreign("project_id")->references("id")->on('project');
             $table->timestamps();
         });
     }
