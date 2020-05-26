@@ -17,7 +17,7 @@ class Project extends Model {
     }
 
     public function kelompok() {
-        return $this->belongsToMany('App\Kelompok', 'project_kelompok');
+        return $this->hasMany('App\Kelompok');
     }
 
 }
