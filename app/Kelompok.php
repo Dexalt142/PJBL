@@ -12,7 +12,7 @@ class Kelompok extends Model {
     protected $table = 'kelompok';
 
     protected $fillable = [
-        'jumlah_anggota'
+        'nama_kelompok', 'project_id'
     ];
 
     public function anggota() {
