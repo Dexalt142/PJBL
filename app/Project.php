@@ -12,6 +12,10 @@ class Project extends Model {
         'nama_project', 'kelas_id',
     ];
 
+    public function fase() {
+        return $this->hasMany('App\Fase');
+    }
+
     public function kelas() {
         return $this->belongsTo('App\Kelas');
     }

@@ -24,4 +24,8 @@ class Kelompok extends Model {
         }
         return $anggota;
     }
+
+    public function fase() {
+        return $this->hasMany('App\Fase')->withPivot('jawaban', 'jawaban_file', 'status');
+    }
 }
