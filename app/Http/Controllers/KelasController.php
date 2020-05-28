@@ -68,12 +68,30 @@ class KelasController extends Controller {
                     return redirect()->to($request->r);
                 }
             } else {
-                return redirect()->to($request->r)->withErrors(['siswa_406', 'Siswa sudah berada di dalam kelas']);
+                return redirect()->to($request->r)->withErrors(['undang_siswa' => 'Siswa sudah berada di dalam kelas']);
             }
         } else {
-            return redirect()->to($request->r)->withErrors(['siswa_404', 'Siswa tidak ditemukan']);
+            return redirect()->to($request->r)->withErrors(['undang_siswa' => 'Siswa tidak ditemukan']);
         }
         
+    }
+
+    public function gabungKelas(Request $request) {
+        $validated = $request->validate([
+            'kode_kelas' => ['required', 'string'],
+        ]);
+
+        $kelas = Kelas::where(['kode_kelas' => $validated['kode_kelas']])->first();
+        if($kelas) {
+            if(!$kelas->siswa->contains(auth()->user()->detail)) {
+                $kelas->siswa()->attach(auth()->user()->detail, ['tanggal_masuk' => Carbon::now()]);
+                return redirect()->back();
+            } else {
+                return redirect()->to($request->r)->withErrors(['kode_kelas' => 'Anda sudah bergabung di kelas ini']);
+            }
+        } else {
+            return redirect()->to($request->r)->withErrors(['kode_kelas' => 'Kelas tidak ditemukan']);
+        }
     }
 
 }
