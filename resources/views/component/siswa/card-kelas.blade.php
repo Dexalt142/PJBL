@@ -5,6 +5,9 @@
                 <div class="f-w-400">
                     {{ $kelas->kode_kelas }}
                 </div>
+                <div class="f-w-500">
+                    {{ $kelas->guru->nama_lengkap }}
+                </div>
                 <div class="f-w-700" style="font-size: 1.25rem">
                     {{ $kelas->nama }}
                 </div>

@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <h4 class="m-0 f-w-700">
-                        <a href="{{ route("guru-project-detail", $project->id) }}">{{ $project->nama_project }}</a>
+                        <a href="{{ route("siswa-project-detail", $project->id) }}">{{ $project->nama_project }}</a>
                     </h4>
                     <span class="badge badge-pill badge-primary">
                         {{ $project->kelas->nama }}
@@ -17,8 +17,8 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <h5><ion-icon name="people-outline"></ion-icon> Jumlah Kelompok</h5>
-                    {{ $project->kelompok->count() }}
+                    <h5><ion-icon name="albums-outline"></ion-icon> Jumlah Fase</h5>
+                    {{ $project->fase->count() }}
                 </div>
             </div>
         </div>
