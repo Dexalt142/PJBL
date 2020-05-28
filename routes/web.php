@@ -64,20 +64,16 @@ Route::middleware('siswa', 'user-validated')->group(function() {
     Route::get('siswa', function() {
         return view('siswa.dashboard');
     })->name('siswa-dashboard');
-});
 
+    Route::prefix('siswa')->group(function() {
+        Route::prefix('kelas')->group(function() {
+            Route::get('{kelas}', 'SiswaPageController@viewKelas')->name('siswa-kelas-detail');
+            Route::post('gabung', 'KelasController@gabungKelas');
+        });
 
-Route::get('/test', function() {
-    $users = App\User::all();
-    $i = 1;
-    $k = 1;
-    $max = 2;
-    foreach($users as $user) {
-        echo "Kel $k: $user->email<br>";
-        if($i % $max == 0) {
-            echo "==========<br>";
-            $k++;
-        }
-        $i++;
-    }
+        Route::prefix('project')->group(function() {
+            Route::get('{id_project}', 'SiswaPageController@viewProject')->name('siswa-project-detail');
+        });
+
+    });
 });
