@@ -54,10 +54,7 @@
 
                 @forelse (auth()->user()->detail->kelas as $kelas)
                     @component('component.guru.card-kelas')
-                        @slot('kode_kelas', $kelas->kode_kelas)
-                        @slot('nama_kelas', $kelas->nama)
-                        @slot('jumlah_siswa', $kelas->siswa->count())
-                        @slot('jumlah_project', $kelas->project->count())
+                        @slot('kelas', $kelas)
                     @endcomponent
                 @empty
                 {{ "Anda belum memiliki kelas" }}
@@ -69,21 +66,14 @@
         <section class="section">
             <div class="section-header">
                 <div class="section-title">
-                    Project
-                </div>
-                <div class="section-menu">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#createKelasModal">Buat project</button>
+                    Project terbaru
                 </div>
             </div>
 
             <div class="row">
-                @foreach ($projects as $project)
+                @foreach ($projects->sortByDesc('created_at')->take(3) as $project)
                     @component('component.guru.card-project')
-                        @slot('id_project', $project->id)
-                        @slot('nama_project', $project->nama_project)
-                        @slot('nama_kelas', $project->kelas->nama)
-                        @slot('tanggal_pembuatan', $project->created_at)
-                        @slot('jumlah_kelompok', $project->kelompok->count())
+                        @slot('project', $project)
                     @endcomponent
                 @endforeach
             </div>
@@ -97,7 +87,7 @@
                 <h5 class="modal-title">Buat kelas baru</h5>
             </div>
             <div class="modal-body">
-                <form action="{{ url('/guru/kelas/buat') }}" method="POST">
+                <form action="{{ route('guru-kelas-create') }}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="nama_kelas">Nama kelas</label>
@@ -121,11 +111,11 @@
 @endsection
 
 @section('scripts')
-    @if ($errors->any())
+    @error('nama_kelas')
         <script>
             $("#createKelasModal").modal('show');
         </script>
-    @endif
+    @enderror
 
     <script>
         $(".card-kelas").on('click', function() {

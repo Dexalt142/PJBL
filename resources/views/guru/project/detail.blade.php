@@ -43,7 +43,30 @@
                         </div>
                     </div>
                     @endforeach
+                @else
+                <div class="col-12">
+                    Belum ada kelompok yang dibuat 
+                </div>
                 @endif
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    Fase
+                </div>
+                <div class="section-menu">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#createKelompokModal">Buat fase</button>
+                </div>
+            </div>
+
+            <div class="row">
+                @foreach ($project->fase->sortBy('fase_ke') as $fase)
+                    @component('component.guru.card-fase')
+                        @slot('fase', $fase)
+                    @endcomponent
+                @endforeach
             </div>
         </section>
     </div>
@@ -56,7 +79,7 @@
                         <h5 class="modal-title">Buat kelompok</h5>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ url("/guru/project/$project->id/gen-kelompok") }}" method="POST">
+                        <form action="{{ route("guru-kelompok-generate", $project->id) }}" method="POST">
                             @csrf
                             <input type="hidden" name="id_project" value="{{ $project->id }}">
                             <div class="form-group">
