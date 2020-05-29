@@ -20,7 +20,7 @@
                 @endif
                 <div class="ml-auto">
                     
-                    <form action="{{ url('logout') }}" method="POST">
+                    <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-link">{{ (auth()->user()->detail) ? auth()->user()->detail->nama_lengkap : 'Logout' }} <ion-icon name="chevron-down-outline"></ion-icon></button>
                     </form>

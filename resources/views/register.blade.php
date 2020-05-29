@@ -22,7 +22,7 @@ PJBL &middot; Register
                         </div>
 
                         <div class="mt-4">
-                            <form action="{{ url('register') }}" method="POST">
+                            <form action="{{ route('register-post') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label for="email">Email</label>
@@ -68,7 +68,7 @@ PJBL &middot; Register
                                 <button class="btn btn-md btn-primary w-100" type="submit" id="registerButton">Register</button>
                                 <hr>
                                 <div class="text-center">
-                                    Sudah memiliki akun? <a href="{{ url('/') }}">Masuk sekarang</a>
+                                    Sudah memiliki akun? <a href="{{ route('root') }}">Masuk sekarang</a>
                                 </div>
                             </form>
                         </div>

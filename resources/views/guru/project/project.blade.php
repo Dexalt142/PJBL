@@ -13,11 +13,7 @@
         <div class="row">
             @foreach ($projects as $project)
                 @component('component.guru.card-project')
-                    @slot('id_project', $project->id)
-                    @slot('nama_project', $project->nama_project)
-                    @slot('nama_kelas', $project->kelas->nama)
-                    @slot('tanggal_pembuatan', $project->created_at)
-                    @slot('jumlah_kelompok', $project->kelompok->count())
+                    @slot('project', $project)
                 @endcomponent
             @endforeach
         </div>

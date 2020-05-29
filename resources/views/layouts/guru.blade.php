@@ -20,9 +20,9 @@
                 @endif
                 <div class="ml-auto">
                     
-                    <form action="{{ url('logout') }}" method="POST">
+                    <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-link">{{ (auth()->user()->detail) ? auth()->user()->detail->nama_lengkap : 'Logout' }} <span class="fa fa-chevron-down"></span></button>
+                        <button type="submit" class="btn btn-link">{{ (auth()->user()->detail) ? auth()->user()->detail->nama_lengkap : 'Logout' }} <ion-icon name="chevron-down-outline"></ion-icon></button>
                     </form>
                 </div>
             </div>
@@ -36,13 +36,13 @@
 
                 <ul class="sidebar-menu">
                     <li class="sidebar-item">
-                        <a href="{{ route('guru-dashboard') }}"><i class="material-icons">dashboard</i> Dashboard</a>
+                        <a href="{{ route('guru-dashboard') }}"><ion-icon name="home-outline"></ion-icon> Dashboard</a>
                     </li>
                     <li class="sidebar-item">
-                        <a href=""><i class="fa fa-cube"></i> Kelas</a>
+                        <a href=""><ion-icon name="cube-outline"></ion-icon> Kelas</a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{ route('guru-project') }}"><i class="fa fa-cube"></i> Project</a>
+                        <a href="{{ route('guru-project') }}"><ion-icon name="albums-outline"></ion-icon> Project</a>
                     </li>
                 </ul>
             </div>
@@ -64,6 +64,8 @@
         <script src="{{ asset('assets/js/jquery-3.5.1.min.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+        <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+
         @if (auth()->user()->detail)
             <script>
                 $(document).ready(function() {
@@ -71,6 +73,18 @@
                         toggleSidebar();
                     }
                 });
+
+                $(window).resize(function() {
+                    if($(this).width() >= 960) {
+                        $('.sidebar').addClass('show');
+                        $('.top-navigation').addClass('shrink');
+                        $('#content').addClass('shrink');
+                    } else {
+                        $('.sidebar').removeClass('show');
+                        $('.top-navigation').removeClass('shrink');
+                        $('#content').removeClass('shrink');
+                    }
+                })
 
                 $("#toggle").on('click', function() {
                     toggleSidebar();
