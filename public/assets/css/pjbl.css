@@ -11,6 +11,10 @@ body {
     vertical-align: middle;
 }
 
+ion-icon {
+    vertical-align: middle;
+}
+
 .form-check-label {
     user-select: none;
 }
@@ -335,4 +339,66 @@ body {
 .section-menu {
     font-size: 1.25rem;
     margin-left: auto;
+}
+
+.fase {
+    position: relative;
+    width: 100%;
+    margin-left: 50px;
+}
+
+.fase::before {
+    position: absolute;
+    left: -20px;
+    display: block;
+    width: 10px;
+    height: 100%;
+    background-color: #007bff;
+    content: '';
+}
+
+.fase:first-child::before {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.fase:last-child::before {
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+.fase .number {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 4px solid #007bff;
+    width: 40px;
+    height: 40px;
+    color: #007bff;
+    left: -35px;
+    background: white;
+    top: -1px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    border-radius: 50%;
+    user-select: none;
+}
+
+.fase.done .number {
+    background: #007bff;
+    color: white;
+}
+
+.fase.locked::before {
+    background: #e0e0e0;
+}
+
+.fase.locked .number {
+    color: #e0e0e0;
+    border-color: #e0e0e0;
+}
+
+.fase:last-child .mb-4 {
+    margin-bottom: 0px!important;
 }
