@@ -24,30 +24,28 @@
             </div>
 
             <div class="row">
-                @if ($project->kelompok->count() > 0)    
-                    @foreach ($project->kelompok as $kelompok)
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="card-title">
-                                    {{ $kelompok->nama_kelompok }}<br>
-                                </div>
-                                <ol>
-                                    @foreach ($kelompok->anggota() as $anggota)
-                                    <li>
-                                        {{ $anggota->nama_lengkap }}
-                                    </li>
-                                    @endforeach
-                                </ol>
+                @forelse ($project->kelompok as $kelompok)
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                {{ $kelompok->nama_kelompok }}<br>
                             </div>
+                            <ol>
+                                @foreach ($kelompok->anggota() as $anggota)
+                                <li>
+                                    {{ $anggota->nama_lengkap }}
+                                </li>
+                                @endforeach
+                            </ol>
                         </div>
                     </div>
-                    @endforeach
-                @else
+                </div>
+                @empty
                 <div class="col-12">
                     Belum ada kelompok yang dibuat 
                 </div>
-                @endif
+                @endforelse
             </div>
         </section>
 
@@ -57,16 +55,20 @@
                     Fase
                 </div>
                 <div class="section-menu">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#createKelompokModal">Buat fase</button>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#createFaseModal">Buat fase</button>
                 </div>
             </div>
 
             <div class="row">
-                @foreach ($project->fase->sortBy('fase_ke') as $fase)
+                @forelse ($project->fase->sortBy('fase_ke') as $fase)
                     @component('component.guru.card-fase')
                         @slot('fase', $fase)
                     @endcomponent
-                @endforeach
+                @empty
+                <div class="col-12">
+                    Belum ada fase yang dibuat 
+                </div>
+                @endforelse
             </div>
         </section>
     </div>
@@ -103,6 +105,69 @@
             </div>
         </div>
     @endif
+
+    <div class="modal fade" id="createFaseModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Buat fase baru</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('guru-fase-create', $project->id) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="r" value="{{ route('guru-project-detail', $project->id) }}">
+                        <div class="form-group">
+                            <label for="nama_fase">Nama fase</label>
+                            <input type="text" class="form-control @error('nama_fase') is-invalid @enderror" name="nama_fase" placeholder="Nama fase" value="{{ old('nama_fase') }}" required>
+                            @error('nama_fase')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deskripsi">Deskripsi</label>
+                            <textarea name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror" required>{{ old('deskripsi') }}</textarea>
+                            @error('deskripsi')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fase_type">Deskripsi</label>
+                            <select name="fase_type" class="form-control @error('fase_type') is-invalid @enderror">
+                                <option value="materi" @if(old('fase_type') == "materi") {{ "selected" }} @endif>Materi</option>
+                                <option value="tes" @if(old('fase_type') == "tes") {{ "selected" }} @endif>Tes</option>
+                            </select>
+                            @error('fase_type')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deadline">Deadline</label>
+                            <input type="datetime-local" class="form-control @error('deadline') is-invalid @enderror" name="deadline" min="{{ \Carbon\Carbon::now()->format("Y-m-d") }}" placeholder="Deadline" value="{{ old('deadline') }}" required>
+                            @error('deadline')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Buat project</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')

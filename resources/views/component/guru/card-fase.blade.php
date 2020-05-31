@@ -14,7 +14,7 @@
                             {{ $fase->deskripsi }}
                         </p>
                     </div>
-
+                    
                     <div class="col-md-4 mb-4">
                         <div class="f-w-700">
                             <ion-icon name="calendar-outline"></ion-icon> Deadline: {{ \Carbon\Carbon::parse($fase->deadline)->format("d M Y H:i:s") }}
@@ -25,6 +25,12 @@
                         <div class="f-w-700">
                             <ion-icon name="checkbox-outline"></ion-icon> Kelompok selesai: 0
                         </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <a href="{{ route('guru-fase-detail', [$fase->project->id, $fase->id]) }}" class="btn btn-primary">Detail</a>
                     </div>
                 </div>
             </div>
