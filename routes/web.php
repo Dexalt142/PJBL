@@ -53,7 +53,8 @@ Route::middleware('guru', 'user-validated')->group(function() {
         Route::prefix('project')->group(function() {
             Route::get('/', 'ProjectController@showProjectPage')->name('guru-project');
             Route::get('{id_project}', 'ProjectController@viewProject')->name('guru-project-detail');
-
+            
+            Route::post('{id_project}/fase/buat', 'ProjectController@buatFase')->name('guru-fase-create');
             Route::post('buat', 'ProjectController@buatProject')->name('guru-project-create');
             Route::post('{id_project}/genkel', 'ProjectController@generateKelompok')->name('guru-kelompok-generate');
         });

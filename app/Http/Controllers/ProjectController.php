@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use App\Kelompok;
+use App\Fase;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +13,7 @@ use Carbon\Carbon;
 class ProjectController extends Controller {
 
     public function __construct() {
-        $this->middleware('guru', ['only' => ['buatProject', 'showProjectPage', 'viewProject']]);
+        $this->middleware('guru', ['only' => ['buatProject', 'buatFase', 'showProjectPage', 'viewProject']]);
     }
 
     public function buatProject(Request $request) {
@@ -41,6 +42,28 @@ class ProjectController extends Controller {
             abort(404);
         }
         return view('guru.project.detail', compact('project'));
+    }
+
+    public function buatFase($id_project, Request $request) {
+        $validated = $request->validate([
+            'nama_fase' => ['required', 'string'],
+            'deskripsi' => ['required', 'string'],
+            'fase_type' => ['required', 'string', 'regex:(materi|tes)'],
+            'deadline' => ['required', 'date'],
+        ]);
+
+        $a = Fase::where(['project_id' => $id_project])->orderBy('fase_ke', 'DESC')->first();
+        $validated['project_id'] = $id_project;
+        $validated['fase_ke'] = 1;
+
+        if($a) {
+            $validated['fase_ke'] = $a->fase_ke + 1;
+        } 
+        
+        $fase = Fase::create($validated);
+        if($fase) {
+            return redirect()->back();
+        }
     }
 
     public function generateKelompok(Request $request) {
