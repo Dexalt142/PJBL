@@ -36,7 +36,6 @@ Route::middleware('auth')->group(function() {
     Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 });
 
-
 Route::middleware('guru', 'user-validated')->group(function() {
     Route::get('guru', 'GuruPageController@showDashboard')->name('guru-dashboard');
     
@@ -52,11 +51,16 @@ Route::middleware('guru', 'user-validated')->group(function() {
         
         Route::prefix('project')->group(function() {
             Route::get('/', 'ProjectController@showProjectPage')->name('guru-project');
-            Route::get('{id_project}', 'ProjectController@viewProject')->name('guru-project-detail');
+            Route::get('{project}', 'ProjectController@viewProject')->name('guru-project-detail');
             
             Route::post('{id_project}/fase/buat', 'ProjectController@buatFase')->name('guru-fase-create');
             Route::post('buat', 'ProjectController@buatProject')->name('guru-project-create');
-            Route::post('{id_project}/genkel', 'ProjectController@generateKelompok')->name('guru-kelompok-generate');
+            Route::post('{project}/genkel', 'ProjectController@generateKelompok')->name('guru-kelompok-generate');
+
+            Route::prefix('{project}')->group(function() {
+                Route::get('/fase/{fase}', 'ProjectController@viewFase')->name('guru-fase-detail');
+                Route::post('/fase/{fase}/edit', 'ProjectController@editFase')->name('guru-fase-edit');
+            });
         });
 
 
@@ -72,11 +76,14 @@ Route::middleware('siswa', 'user-validated')->group(function() {
         Route::prefix('kelas')->group(function() {
             Route::get('{kelas}', 'SiswaPageController@viewKelas')->name('siswa-kelas-detail');
             Route::post('gabung', 'KelasController@gabungKelas');
+
+            Route::prefix('{kelas}')->group(function() {
+                Route::prefix('project')->group(function() {
+                    Route::get('{id_project}', 'SiswaPageController@viewProject')->name('siswa-project-detail');
+                });
+            });
         });
 
-        Route::prefix('project')->group(function() {
-            Route::get('{id_project}', 'SiswaPageController@viewProject')->name('siswa-project-detail');
-        });
 
     });
 });
