@@ -36,15 +36,23 @@ class ProjectController extends Controller {
         return view('guru.project.project', compact('projects'));
     }
 
-    public function viewProject($id_project) {
-        $project = Project::where('id', $id_project)->firstOrFail();
+    public function viewProject($project) {
+        $project = Project::where('id', $project)->firstOrFail();
         if($project->kelas->guru != auth()->user()->detail) {
             abort(404);
         }
         return view('guru.project.detail', compact('project'));
     }
 
-    public function buatFase($id_project, Request $request) {
+    public function viewFase($project, $fase) {
+        $fase = Fase::where('id', $fase)->firstOrFail();
+        if($fase->project->kelas->guru != auth()->user()->detail) {
+            abort(404);
+        }
+        return view('guru.fase.detail', compact('fase'));
+    }
+
+    public function buatFase($project, Request $request) {
         $validated = $request->validate([
             'nama_fase' => ['required', 'string'],
             'deskripsi' => ['required', 'string'],
@@ -52,8 +60,8 @@ class ProjectController extends Controller {
             'deadline' => ['required', 'date'],
         ]);
 
-        $a = Fase::where(['project_id' => $id_project])->orderBy('fase_ke', 'DESC')->first();
-        $validated['project_id'] = $id_project;
+        $a = Fase::where(['project_id' => $project])->orderBy('fase_ke', 'DESC')->first();
+        $validated['project_id'] = $project;
         $validated['fase_ke'] = 1;
 
         if($a) {
@@ -62,6 +70,25 @@ class ProjectController extends Controller {
         
         $fase = Fase::create($validated);
         if($fase) {
+            return redirect()->back();
+        }
+    }
+
+    public function editFase(Request $request) {
+        $validated = $request->validate([
+            'id' => ['required', 'integer'],
+            'nama_fase' => ['required', 'string'],
+            'deskripsi' => ['required', 'string'],
+            'fase_type' => ['required', 'string', 'regex:(materi|tes)'],
+            'deadline' => ['required', 'date'],
+        ]);
+
+        $fase = Fase::where('id', $validated['id'])->first();
+        $fase->nama_fase = $validated['nama_fase'];
+        $fase->deskripsi = $validated['deskripsi'];
+        $fase->fase_type = $validated['fase_type'];
+        $fase->deadline = $validated['deadline'];
+        if($fase->save()) {
             return redirect()->back();
         }
     }
