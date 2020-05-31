@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 class Siswa extends Model {
 
@@ -15,5 +16,16 @@ class Siswa extends Model {
     public function kelas() {
         return $this->belongsToMany('App\Kelas');
     }
+
+    public function project() {
+        $project = new Collection;
+        foreach($this->kelas as $kelas) {
+            $project = $project->merge($kelas->project);
+        }
+
+        return $project;
+    }
+
+
 
 }
