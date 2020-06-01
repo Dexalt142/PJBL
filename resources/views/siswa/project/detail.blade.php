@@ -4,8 +4,8 @@
 @section('page-header', $project->nama_project)
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('guru-dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('guru-kelas-detail', $project->kelas->kode_kelas) }}">{{ $project->kelas->nama }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('siswa-dashboard') }}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('siswa-kelas-detail', $project->kelas->kode_kelas) }}">{{ $project->kelas->nama }}</a></li>
     <li class="breadcrumb-item active">{{ $project->nama_project }}</li>
 @endsection
 
@@ -14,40 +14,16 @@
         <section class="section">
             <div class="section-header">
                 <div class="section-title">
-                    Kelompok
-                </div>
-                <div class="section-menu">
-                    @if ($project->kelompok->count() == 0)
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#createKelompokModal">Buat kelompok</button>
-                    @endif
+                    Kelompok anda
                 </div>
             </div>
 
             <div class="row">
-                @if ($project->kelompok->count() > 0)    
-                    @foreach ($project->kelompok as $kelompok)
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="card-title">
-                                    {{ $kelompok->nama_kelompok }}<br>
-                                </div>
-                                <ol>
-                                    @foreach ($kelompok->anggota() as $anggota)
-                                    <li>
-                                        {{ $anggota->nama_lengkap }}
-                                    </li>
-                                    @endforeach
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
+                <ol>
+                    @foreach ($kelompok->anggota() as $anggota)
+                        <li>{{ $anggota->nama_lengkap }}</li>    
                     @endforeach
-                @else
-                <div class="col-12">
-                    Belum ada kelompok yang dibuat 
-                </div>
-                @endif
+                </ol>
             </div>
         </section>
 
@@ -63,9 +39,10 @@
 
             <div class="row">
                 @foreach ($project->fase->sortBy('fase_ke') as $fase)
-                @component('component.guru.card-fase')
-                    @slot('fase', $fase)
-                @endcomponent
+                    @component('component.siswa.card-fase')
+                        @slot('fase', $fase)
+                        @slot('kelompok', $kelompok)
+                    @endcomponent
                 @endforeach
             </div>
         </section>
