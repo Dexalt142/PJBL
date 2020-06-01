@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Kelas;
+use App\Kelompok;
 use App\Project;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class SiswaPageController extends Controller {
 
@@ -21,12 +23,21 @@ class SiswaPageController extends Controller {
         return view('siswa.kelas.detail', compact('kelas'));
     }    
     
-    public function viewProject($id_project) {
-        $project = Project::where('id', $id_project)->firstOrFail();
-        if($project->kelas->guru != auth()->user()->detail) {
+    public function viewProject($kode_kelas, $id_project) {
+        $kelas = Kelas::where('kode_kelas', $kode_kelas)->first();
+        if($kelas->siswa->contains(auth()->user()->detail)) {
+            $project = $kelas->project->where('id', $id_project)->first();
+            if($project) {
+                $kel = DB::table('kelompok_anggota')->where('siswa_id', auth()->user()->detail->id)->first();
+                $kelompok = Kelompok::find($kel->id);
+
+                return view('siswa.project.detail', compact('project', 'kelompok'));
+            } else {
+                abort(404);
+            }
+        } else {
             abort(404);
         }
-        return view('siswa.project.detail', compact('project'));
     }
     
     public function showDashboard() {
