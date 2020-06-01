@@ -68,6 +68,26 @@
             </div>
         </section>
 
+        <section class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    Progress Kelompok
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            @foreach ($fase->kelompok as $k)
+                                {{ $k}}
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </div>
 
 @endsection
