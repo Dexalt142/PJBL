@@ -10,11 +10,14 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use \Illuminate\Support\Str;
 
 class ProjectController extends Controller {
 
     public function __construct() {
         $this->middleware('guru', ['only' => ['buatProject', 'buatFase', 'showProjectPage', 'viewProject']]);
+        $this->middleware('siswa', ['only' => ['answerFase']]);
     }
 
     public function buatProject(Request $request) {
@@ -92,6 +95,40 @@ class ProjectController extends Controller {
         if($fase->save()) {
             return redirect()->back();
         }
+    }
+
+    public function answerFase(Request $request) {
+        $validated = $request->validate([
+            'fase_id' => ['integer', 'exists:fase,id'],
+            'kelompok_id' => ['integer', 'exists:kelompok,id'],
+            'jawaban' => ['nullable', 'sometimes', 'string'],
+            'jawaban_file' => ['nullable', 'sometimes', 'mimes:docx,doc,pptx,ppt,pdf,rar,zip'],
+        ]);
+        
+
+        $validated['status'] = 1;
+        $fk = FaseKelompok::where(['fase_id' => $validated['fase_id'], 'kelompok_id' => $validated['kelompok_id']])->first();
+        if($fk) {
+            if($request->file('jawaban_file')) {
+                $filename = Str::random(10).'_'.$request->file('jawaban_file')->getClientOriginalName();
+                $path = Storage::disk('answer_files')->putFileAs('', $request->file('jawaban_file'), $filename);
+    
+                $fk->jawaban_file = $filename;
+            }
+            $fk->jawaban = $validated['jawaban'];
+            $fk->save();
+        } else {
+            if($request->file('jawaban_file')) {
+                $filename = Str::random(10).'_'.$request->file('jawaban_file')->getClientOriginalName();
+                $path = Storage::disk('answer_files')->putFileAs('', $request->file('jawaban_file'), $filename);
+    
+                $validated['jawaban_file'] = $filename;
+            }
+
+            FaseKelompok::create($validated);
+        }
+
+        return redirect()->back();
     }
 
     public function nilaiFase(Request $request) {
