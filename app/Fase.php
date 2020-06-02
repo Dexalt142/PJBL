@@ -13,6 +13,8 @@ class Fase extends Model {
         'nama_fase', 'deskripsi', 'deadline', 'fase_type', 'fase_ke', 'project_id'
     ];
 
+    protected $dates = ['deadline'];
+
     public function project() {
         return $this->belongsTo('App\Project');
     }
