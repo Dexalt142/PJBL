@@ -55,6 +55,8 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL', null),
+    
+    'answer_files' => 'answer_files/',
 
     /*
     |--------------------------------------------------------------------------
@@ -228,5 +230,4 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
 ];
