@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Kelas;
 use App\Kelompok;
+use App\FaseKelompok;
+use App\Fase;
 use App\Project;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
@@ -35,6 +37,25 @@ class SiswaPageController extends Controller {
             } else {
                 abort(404);
             }
+        } else {
+            abort(404);
+        }
+    }
+
+    public function viewFase($kelas, $project, $fase) {
+        $kelompok = Kelompok::where('project_id', $project)->get();
+        foreach($kelompok as $k) {
+            if($k->anggota()->contains(auth()->user()->detail)) {
+               $kelompok = $k; 
+            }
+        }
+
+        $fase = Fase::where(['id' => $fase])->firstOrFail();
+        $status = $fase->getStatus($kelompok->id);
+        
+        if($status == 1 || $status == 2) {
+            $faseKelompok = FaseKelompok::where(['fase_id' => $fase->id, 'kelompok_id' => $kelompok->id])->first();
+            return view('siswa.fase.detail', compact('fase', 'kelompok','faseKelompok'));
         } else {
             abort(404);
         }
