@@ -60,10 +60,17 @@ Route::middleware('guru', 'user-validated')->group(function() {
             Route::prefix('{project}')->group(function() {
                 Route::get('/fase/{fase}', 'ProjectController@viewFase')->name('guru-fase-detail');
                 Route::post('/fase/{fase}/edit', 'ProjectController@editFase')->name('guru-fase-edit');
+                Route::post('/fase/{fase}/nilai', 'ProjectController@nilaiFase')->name('guru-fase-nilai');
             });
         });
 
 
+    });
+});
+
+Route::middleware('guru', 'user-validated')->group(function() {
+    Route::prefix('api')->group(function() {
+        Route::post('fase-detail', 'APIController@faseDetail')->name('api-fase-detail');
     });
 });
 

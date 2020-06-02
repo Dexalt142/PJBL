@@ -18,11 +18,11 @@ class Fase extends Model {
     }
 
     public function kelompok(){
-        return $this->belongsToMany('App\Kelompok')->withPivot('jawaban', 'jawaban_file', 'status');
+        return $this->belongsToMany('App\Kelompok')->withPivot('jawaban', 'jawaban_file', 'nilai', 'status');
     }
 
-    public function faseDetail() {
-        return FaseKelompok::where('fase_id', $this->id)->first();
+    public function faseDetail($kelompok) {
+        return FaseKelompok::where(['fase_id' => $this->id, 'kelompok_id' => $kelompok])->first();
     }
 
     public function allFaseKelompok() {
@@ -30,18 +30,29 @@ class Fase extends Model {
     }
 
     public function getStatus($kelompok) {
-        $status = '';
+        $status = 0;
+        $det = $this->faseDetail($kelompok);
         if($this->fase_ke == 1) {
-            $status = 'available';
-        } else {
-            $fk = FaseKelompok::where(['fase_id' => $this->id, 'kelompok_id' => $kelompok->id])->first();
-            if($fk && $fk->status == 'selesai') {
-                $status = 'done';
+            if($det) {
+                if($det->status == "1" || $det->status == "2") {
+                    $status = 2;
+                }
             } else {
-                $status = 'locked';
+                $status = 1;
+            }
+        } else {
+            $prevFase = Fase::where(['project_id' => $this->project_id, 'fase_ke' => $this->fase_ke - 1])->first();
+            $prev = FaseKelompok::where(['fase_id' => $prevFase->id, 'kelompok_id' => $kelompok])->first();
+            if($prev) {
+                if($prev->status == "1") {
+                    $status = 0;
+                } else if($prev->status == "2") {
+                    $status = 1;
+                }
+            } else {
+                $status = 0;
             }
         }
-
         return $status;
     }
     

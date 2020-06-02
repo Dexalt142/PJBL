@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use App\Kelompok;
+use App\FaseKelompok;
 use App\Fase;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
@@ -89,6 +90,20 @@ class ProjectController extends Controller {
         $fase->fase_type = $validated['fase_type'];
         $fase->deadline = $validated['deadline'];
         if($fase->save()) {
+            return redirect()->back();
+        }
+    }
+
+    public function nilaiFase(Request $request) {
+        $validated = $request->validate([
+            'fk_id' => ['required', 'integer'],
+            'nilai' => ['required', 'integer'],
+        ]);
+
+        $fk = FaseKelompok::where('id', $validated['fk_id'])->first();
+        $fk->nilai = $validated['nilai'];
+        $fk->status = '2';
+        if($fk->save()) {
             return redirect()->back();
         }
     }
