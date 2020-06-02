@@ -87,7 +87,15 @@ Route::middleware('siswa', 'user-validated')->group(function() {
             Route::prefix('{kelas}')->group(function() {
                 Route::prefix('project')->group(function() {
                     Route::get('{id_project}', 'SiswaPageController@viewProject')->name('siswa-project-detail');
+
+                    Route::prefix('{project}')->group(function() {
+                        Route::prefix('fase')->group(function() {
+                            Route::get('{fase}', 'SiswaPageController@viewFase')->name('siswa-fase-detail');
+                            Route::post('{fase}/jawab', 'ProjectController@answerFase')->name('siswa-fase-answer');
+                        });
+                    });
                 });
+
             });
         });
 
