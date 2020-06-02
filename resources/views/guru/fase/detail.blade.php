@@ -146,8 +146,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="jawaban">File Jawaban</label>
-                    <a class="form-control" name="file_jawaban"></a>
+                    <label for="jawaban_file">File Jawaban</label><br>
+                    <a class="btn btn-link" name="jawaban_file"></a>
                 </div>
 
                 <hr>
@@ -189,9 +189,10 @@
                     if(response.success) {
                         modal.find(".modal-title").html("{{ $fase->nama_fase }} - " + kel);
                         modal.find("textarea[name='jawaban']").html(response.data.jawaban);
-                        if(response.data.file_jawaban) {
+                        if(response.data.jawaban_file) {
+                            modal.find("a[name='jawaban_file']").attr('href', "{{ url(config('app.answer_files')) }}/" + response.data.jawaban_file).html(response.data.jawaban_file);
                         } else {
-                            modal.find("a[name='file_jawaban']").html("Tidak ada file jawaban");
+                            modal.find("a[name='jawaban_file']").html("Tidak ada file jawaban");
                         }
                         modal.find("input[name='nilai']").val(response.data.nilai);
                         modal.find("input[name='fk_id']").val(response.data.id);
