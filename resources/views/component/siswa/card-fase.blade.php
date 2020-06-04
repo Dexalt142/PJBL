@@ -34,7 +34,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-8 mb-3">
+                    <div class="col-md-12 mb-3">
                         <h4 class="m-0 f-w-700 mb-2">
                             {{ $fase->nama_fase }}
                         </h4>
@@ -45,22 +45,78 @@
                         </p>
                     </div>
 
-                    <div class="col-md-4 mb-4">
-                        <div class="f-w-700">
-                            <ion-icon name="calendar-outline"></ion-icon> Deadline: {{ \Carbon\Carbon::parse($fase->deadline)->format("d M Y H:i:s") }}
-                        </div>
-                        <div class="f-w-700">
-                            <ion-icon name="document-outline"></ion-icon> Tipe fase: {{ ucfirst($fase->fase_type) }}
-                        </div>
-                        <div class="f-w-700">
-                            <ion-icon name="help-outline"></ion-icon> Status: {{ $s2 }}
-                        </div>
-                        @if ($s2 == 'Telah dinilai')
-                            <div class="f-w-700">
-                                <ion-icon name="analytics-outline"></ion-icon> Nilai: {{ $f->nilai }}
+                    @if($s != 'locked')
+                    <div class="col-md-12 mb-4">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="info-box">
+                                    <div class="icon">
+                                        <ion-icon name="calendar-outline"></ion-icon>
+                                    </div>
+                                    <div class="content">
+                                        <div class="title">
+                                            Status
+                                        </div>
+                                        <div class="subtitle">
+                                            {{ \Carbon\Carbon::parse($fase->deadline)->format("d M Y H:i") }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        @endif
+
+                            <div class="col-md-3">
+                                <div class="info-box">
+                                    <div class="icon">
+                                        <ion-icon name="document-outline"></ion-icon>
+                                    </div>
+                                    <div class="content">
+                                        <div class="title">
+                                            Tipe Fase
+                                        </div>
+                                        <div class="subtitle">
+                                            {{ ucfirst($fase->fase_type) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="info-box">
+                                    <div class="icon">
+                                        <ion-icon name="checkbox-outline"></ion-icon>
+                                    </div>
+                                    <div class="content">
+                                        <div class="title">
+                                            Status
+                                        </div>
+                                        <div class="subtitle">
+                                            {{ $s2 }}
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>
+
+                            @if ($s2 == 'Telah dinilai')
+                            <div class="col-md-3">
+                                <div class="info-box">
+                                    <div class="icon">
+                                        <ion-icon name="thumbs-up-outline"></ion-icon>
+                                    </div>
+                                    <div class="content">
+                                        <div class="title">
+                                            Status
+                                        </div>
+                                        <div class="subtitle">
+                                            {{ $f->nilai }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          @endif
+
+                        </div>
                     </div>
+                    @endif
                 </div>
 
                 <div class="row">

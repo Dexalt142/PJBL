@@ -25,22 +25,9 @@
 
             <div class="row">
                 @forelse ($project->kelompok as $kelompok)
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title">
-                                {{ $kelompok->nama_kelompok }}<br>
-                            </div>
-                            <ol>
-                                @foreach ($kelompok->anggota() as $anggota)
-                                <li>
-                                    {{ $anggota->nama_lengkap }}
-                                </li>
-                                @endforeach
-                            </ol>
-                        </div>
-                    </div>
-                </div>
+                    @component('component.guru.card-kelompok')
+                        @slot('kelompok', $kelompok)
+                    @endcomponent
                 @empty
                 <div class="col-12">
                     Belum ada kelompok yang dibuat 

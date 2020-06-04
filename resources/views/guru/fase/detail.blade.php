@@ -98,19 +98,48 @@
                                                 $pg = $k->fase->firstWhere('id', $fase->id);
                                             @endphp
                                             @if ($pg)
-                                                <div class="f-w-700">
-                                                    <div>
-                                                        Status: @if($pg->pivot->status == '1') {{ "Sudah mengumpulkan" }} @else {{ "Sudah dinilai" }} @endif
+                                                <div class="info-box">
+                                                    <div class="icon">
+                                                        <ion-icon name="checkbox-outline"></ion-icon>
                                                     </div>
-                                                    @if ($pg->pivot->status == "2")
-                                                        <div>
-                                                            Nilai: {{ $pg->pivot->nilai }}
+                                                    <div class="content">
+                                                        <div class="title">
+                                                            Status
                                                         </div>
-                                                    @endif
+                                                        <div class="subtitle">
+                                                            @if($pg->pivot->status == '1') {{ "Sudah mengumpulkan" }} @else {{ "Sudah dinilai" }} @endif
+                                                        </div>
+                                                    </div>
                                                 </div>
+
+                                                @if ($pg->pivot->status == "2")
+                                                <div class="info-box">
+                                                    <div class="icon">
+                                                        <ion-icon name="thumbs-up-outline"></ion-icon>
+                                                    </div>
+                                                    <div class="content">
+                                                        <div class="title">
+                                                            Nilai
+                                                        </div>
+                                                        <div class="subtitle">
+                                                            {{ $pg->pivot->nilai }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @endif
                                             @else
-                                                <div class="f-w-700">
-                                                    Status: Belum mengerjakan
+                                                <div class="info-box">
+                                                    <div class="icon">
+                                                        <ion-icon name="checkbox-outline"></ion-icon>
+                                                    </div>
+                                                    <div class="content">
+                                                        <div class="title">
+                                                            Status
+                                                        </div>
+                                                        <div class="subtitle">
+                                                            Belum mengerjakan
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             @endif
                                         </div>

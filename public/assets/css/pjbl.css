@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;900&display=swap');
 
 body {
     font-family: "Nunito";
@@ -405,4 +405,36 @@ ion-icon {
 
 .fase:last-child .mb-4 {
     margin-bottom: 0px!important;
+}
+
+.info-box {
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.info-box .icon {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 45px;
+    font-size: 1.5rem;
+    background: #DEEBFC;
+    color: #097ee0;
+    border-radius: .5rem;
+}
+
+.info-box .content {
+    margin-left: .5rem;
+}
+
+.info-box .content .title {
+    font-weight: 500;
+    color: #6d6d6d;
+}
+
+.info-box .content .subtitle {
+    font-weight: 700;
 }
