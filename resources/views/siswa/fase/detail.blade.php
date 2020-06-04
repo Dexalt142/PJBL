@@ -47,7 +47,7 @@
                             @endif
                                 <div class="form-group">
                                     <label for="jawaban">Jawaban</label>
-                                    <textarea name="jawaban" class="form-control">@if($faseKelompok) {{ $faseKelompok->jawaban }} @endif</textarea>
+                                    <textarea name="jawaban" class="form-control" @if(!$notdeadline || !$notdone) disabled @endif >@if($faseKelompok) {{ $faseKelompok->jawaban }} @endif</textarea>
                                 </div>
 
                                 <div class="form-group">

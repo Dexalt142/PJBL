@@ -19,11 +19,15 @@
             </div>
 
             <div class="row">
+                @if ($kelompok)
                 <ol>
                     @foreach ($kelompok->anggota() as $anggota)
                         <li>{{ $anggota->nama_lengkap }}</li>    
                     @endforeach
                 </ol>
+                    @else
+                    Anda belum memiliki kelompok
+                @endif
             </div>
         </section>
 
@@ -32,18 +36,17 @@
                 <div class="section-title">
                     Fase
                 </div>
-                <div class="section-menu">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#createKelompokModal">Buat fase</button>
-                </div>
             </div>
 
             <div class="row">
+                @if ($kelompok)
                 @foreach ($project->fase->sortBy('fase_ke') as $fase)
                     @component('component.siswa.card-fase')
-                        @slot('fase', $fase)
-                        @slot('kelompok', $kelompok)
+                    @slot('fase', $fase)
+                    @slot('kelompok', $kelompok)
                     @endcomponent
                 @endforeach
+                @endif
             </div>
         </section>
     </div>

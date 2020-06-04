@@ -119,7 +119,7 @@
                                     @if ($pg)
                                     <div class="row mt-4">
                                         <div class="col-12">
-                                            <button class="btn btn-primary" data-answer="{{ $pg->pivot->id }}" data-kelompok="{{ $k->nama_kelompok }}" id="detailFaseButton">Detail</button>
+                                            <button class="btn btn-primary detailFaseButton" data-answer="{{ $pg->pivot->id }}" data-kelompok="{{ $k->nama_kelompok }}">Detail</button>
                                         </div>
                                     </div>
                                     @endif
@@ -175,7 +175,7 @@
 
 @section('scripts')
     <script>
-        $("#detailFaseButton").on('click', function() {
+        $(".detailFaseButton").on('click', function() {
             var modal = $("#detailFaseModal");
             var kel = $(this).data('kelompok');
             $.ajax({
