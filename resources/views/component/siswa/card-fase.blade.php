@@ -8,21 +8,22 @@
     }
 
     $f = $fase->faseDetail($kelompok->id);
-    $s2 = 'Terkunci';
-    if($s == '') {
-        $s2 = 'Tersedia';
-        if($f && $f->status == 1) {
+    $s2 = 'Tersedia';
+    
+    if($f) {
+        if($f->status == '1') {
             $s2 = 'Telah dikerjakan';
+        } else if($f->status == '2') {
+            $s = 'done';
+            $s2 = 'Telah dinilai';
         }
     } else {
-        if($f) {
-            if($f->status == 1) {
-                $s2 = 'Telah dikerjakan';
-            } else if($f->status == 2) {
-                $s2 = 'Telah dinilai';
-            }
+        if($s != '') {
+            $s2 = 'Terkunci';
         }
     }
+    
+    
 @endphp
 
 <div class="fase {{ $s }}">

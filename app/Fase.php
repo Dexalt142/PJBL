@@ -46,13 +46,9 @@ class Fase extends Model {
             $prevFase = Fase::where(['project_id' => $this->project_id, 'fase_ke' => $this->fase_ke - 1])->first();
             $prev = FaseKelompok::where(['fase_id' => $prevFase->id, 'kelompok_id' => $kelompok])->first();
             if($prev) {
-                if($prev->status == "1") {
-                    $status = 0;
-                } else if($prev->status == "2") {
+                if($prev->status == "2") {
                     $status = 1;
                 }
-            } else {
-                $status = 0;
             }
         }
         return $status;

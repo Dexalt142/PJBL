@@ -30,8 +30,14 @@ class SiswaPageController extends Controller {
         if($kelas->siswa->contains(auth()->user()->detail)) {
             $project = $kelas->project->where('id', $id_project)->first();
             if($project) {
-                $kel = DB::table('kelompok_anggota')->where('siswa_id', auth()->user()->detail->id)->first();
-                $kelompok = Kelompok::find($kel->id);
+                $kel = DB::table('kelompok_anggota')->where('siswa_id', auth()->user()->detail->id)->get();
+                $kelompok = null;
+                foreach ($kel as $k) {
+                    $ktemp = Kelompok::find($k->kelompok_id);
+                    if($ktemp->project_id == $id_project) {
+                        $kelompok = $ktemp;
+                    }
+                }
 
                 return view('siswa.project.detail', compact('project', 'kelompok'));
             } else {
