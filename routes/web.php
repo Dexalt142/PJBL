@@ -40,7 +40,9 @@ Route::middleware('guru', 'user-validated')->group(function() {
     Route::get('guru', 'GuruPageController@showDashboard')->name('guru-dashboard');
     
     Route::prefix('guru')->group(function() {
+        Route::get('project', 'ProjectController@showProjectPage')->name('guru-project');
         Route::prefix('kelas')->group(function() {
+            Route::get('/', 'KelasController@showKelasPage')->name('guru-kelas');
             Route::post('buat', 'KelasController@buatKelas')->name('guru-kelas-create');
             
             Route::prefix('{kelas}')->group(function() {
@@ -51,7 +53,6 @@ Route::middleware('guru', 'user-validated')->group(function() {
                 Route::post('gencode', 'KelasController@generateNewCode')->name('guru-kelas-gencode');
     
     
-                Route::get('project', 'ProjectController@showProjectPage')->name('guru-project');
                 Route::get('{project}', 'ProjectController@viewProject')->name('guru-project-detail');
                 
                 Route::post('{project}/fase/buat', 'ProjectController@buatFase')->name('guru-fase-create');

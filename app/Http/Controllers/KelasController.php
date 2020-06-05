@@ -10,6 +10,11 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 class KelasController extends Controller {
+
+    public function showKelasPage() {
+        $listKelas = auth()->user()->detail->kelas;
+        return view('guru.kelas.kelas', compact('listKelas'));
+    }
     
     public function buatKelas(Request $request) {
         $validated = $request->validate([
