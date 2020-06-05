@@ -25,7 +25,7 @@ This project comes with its own database migration. You can migrate the database
 php artisan migrate
 ```
 
-### 4. Installation completed
+#### 4. Installation completed
 You can run this application by running this command
 ```
 php artisan server
