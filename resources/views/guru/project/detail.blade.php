@@ -114,9 +114,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="deskripsi">Deskripsi</label>
-                            <textarea name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror" required>{{ old('deskripsi') }}</textarea>
-                            @error('deskripsi')
+                            <label for="materi">Materi</label>
+                            <textarea name="materi" class="form-control @error('materi') is-invalid @enderror" required>{{ old('materi') }}</textarea>
+                            @error('materi')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -124,7 +124,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="fase_type">Deskripsi</label>
+                            <label for="fase_type">Tipe Fase</label>
                             <select name="fase_type" class="form-control @error('fase_type') is-invalid @enderror">
                                 <option value="materi" @if(old('fase_type') == "materi") {{ "selected" }} @endif>Materi</option>
                                 <option value="tes" @if(old('fase_type') == "tes") {{ "selected" }} @endif>Tes</option>

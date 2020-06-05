@@ -14,7 +14,7 @@ class CreateFaseTable extends Migration {
         Schema::create('fase', function (Blueprint $table) {
             $table->id();
             $table->string("nama_fase");
-            $table->mediumText("deskripsi");
+            $table->mediumText("materi");
             $table->dateTime("deadline");
             $table->string("fase_type", 50);
             $table->string("fase_ke", 5);

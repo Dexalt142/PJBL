@@ -10,7 +10,7 @@ class Fase extends Model {
     protected $table = "fase";
 
     protected $fillable = [
-        'nama_fase', 'deskripsi', 'deadline', 'fase_type', 'fase_ke', 'project_id'
+        'nama_fase', 'materi', 'deadline', 'fase_type', 'fase_ke', 'project_id'
     ];
 
     protected $dates = ['deadline'];

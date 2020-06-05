@@ -11,7 +11,7 @@
                             {{ $fase->nama_fase }}
                         </h4>
                         <p>
-                            {{ $fase->deskripsi }}
+                            {{ $fase->materi }}
                         </p>
                     </div>
                     

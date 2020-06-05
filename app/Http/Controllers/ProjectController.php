@@ -59,7 +59,7 @@ class ProjectController extends Controller {
     public function buatFase($project, Request $request) {
         $validated = $request->validate([
             'nama_fase' => ['required', 'string'],
-            'deskripsi' => ['required', 'string'],
+            'materi' => ['required', 'string'],
             'fase_type' => ['required', 'string', 'regex:(materi|tes)'],
             'deadline' => ['required', 'date'],
         ]);
@@ -82,14 +82,14 @@ class ProjectController extends Controller {
         $validated = $request->validate([
             'id' => ['required', 'integer'],
             'nama_fase' => ['required', 'string'],
-            'deskripsi' => ['required', 'string'],
+            'materi' => ['required', 'string'],
             'fase_type' => ['required', 'string', 'regex:(materi|tes)'],
             'deadline' => ['required', 'date'],
         ]);
 
         $fase = Fase::where('id', $validated['id'])->first();
         $fase->nama_fase = $validated['nama_fase'];
-        $fase->deskripsi = $validated['deskripsi'];
+        $fase->materi = $validated['materi'];
         $fase->fase_type = $validated['fase_type'];
         $fase->deadline = $validated['deadline'];
         if($fase->save()) {
@@ -128,17 +128,19 @@ class ProjectController extends Controller {
             FaseKelompok::create($validated);
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('jawabanSuccess', true);
     }
 
     public function nilaiFase(Request $request) {
         $validated = $request->validate([
             'fk_id' => ['required', 'integer'],
             'nilai' => ['required', 'integer'],
+            'evaluasi' => ['nullable', 'string'],
         ]);
 
         $fk = FaseKelompok::where('id', $validated['fk_id'])->first();
         $fk->nilai = $validated['nilai'];
+        $fk->evaluasi = $validated['evaluasi'];
         $fk->status = '2';
         if($fk->save()) {
             return redirect()->back();

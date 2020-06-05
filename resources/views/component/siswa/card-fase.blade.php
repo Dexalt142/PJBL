@@ -40,7 +40,7 @@
                         </h4>
                         <p>
                             @if ($s != 'locked')
-                                {{ $fase->deskripsi }}
+                                {{ $fase->materi }}
                             @endif
                         </p>
                     </div>

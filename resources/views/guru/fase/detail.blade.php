@@ -53,8 +53,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="deskripsi">Deskripsi</label>
-                                    <textarea name="deskripsi" class="form-control" row="2" disabled>{{ $fase->deskripsi }}</textarea>
+                                    <label for="materi">Materi</label>
+                                    <textarea name="materi" class="form-control" row="2" disabled>{{ $fase->materi }}</textarea>
                                 </div>
 
                                 <div class="form-group" id="actionGroup" style="display: none">
@@ -189,6 +189,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="evaluasi">Evaluasi</label>
+                        <textarea name="evaluasi" class="form-control"></textarea>
+                    </div>
+
+                    <div class="form-group">
                         <button class="btn btn-secondary">Simpan nilai</button>
                     </div>
                 </form>
@@ -224,6 +229,7 @@
                             modal.find("a[name='jawaban_file']").html("Tidak ada file jawaban");
                         }
                         modal.find("input[name='nilai']").val(response.data.nilai);
+                        modal.find("textarea[name='evaluasi']").val(response.data.evaluasi);
                         modal.find("input[name='fk_id']").val(response.data.id);
                         modal.modal('show');
                     }
@@ -235,7 +241,7 @@
             $("input[name='nama_fase']").prop('disabled', false).focus();
             $("select[name='fase_type']").prop('disabled', false);
             $("input[name='deadline']").prop('disabled', false);
-            $("textarea[name='deskripsi']").prop('disabled', false);
+            $("textarea[name='materi']").prop('disabled', false);
             $("#actionGroup").css('display', 'block');
         });
 
@@ -243,7 +249,7 @@
             $("input[name='nama_fase']").prop('disabled', true);
             $("select[name='fase_type']").prop('disabled', true);
             $("input[name='deadline']").prop('disabled', true);
-            $("textarea[name='deskripsi']").prop('disabled', true);
+            $("textarea[name='materi']").prop('disabled', true);
             $("#actionGroup").css('display', 'none');
         });
     </script>

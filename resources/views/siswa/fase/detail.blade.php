@@ -23,7 +23,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            {{ $fase->deskripsi }}
+                            {{ $fase->materi }}
                             <hr>
                             @php
                                 $notdeadline = false;
@@ -45,6 +45,13 @@
                                     <input type="hidden" name="kelompok_id" value="{{ $kelompok->id }}">
                                     <input type="hidden" name="fase_id" value="{{ $fase->id }}">
                             @endif
+                                @if (!$notdeadline)
+                                    <div class="alert alert-danger">Masa pengerjaan sudah habis</div>
+                                @endif
+                                @if(Session::has('jawabanSuccess'))
+                                    <div class="alert alert-success">Jawaban berhasil dikirim</div>
+                                @endif
+
                                 <div class="form-group">
                                     <label for="jawaban">Jawaban</label>
                                     <textarea name="jawaban" class="form-control" @if(!$notdeadline || !$notdone) disabled @endif >@if($faseKelompok) {{ $faseKelompok->jawaban }} @endif</textarea>
@@ -72,6 +79,19 @@
                                         <button class="btn btn-primary" type="submit">Kirim jawaban</button>
                                     </div>
                                 </form>
+                                @endif
+
+                            @if ($faseKelompok && $faseKelompok->status == 2)
+                                <hr>
+                                <div class="form-group">
+                                    <label for="nilai">Nilai</label>
+                                    <input type="number" class="form-control" value="{{ $faseKelompok->nilai }}" disabled>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="evaluasi">Evaluasi</label>
+                                    <textarea class="form-control" disabled>{{ $faseKelompok->evaluasi ? $faseKelompok->evaluasi : 'Tidak ada evaluasi' }}</textarea>
+                                </div>
                             @endif
                         </div>
                     </div>
