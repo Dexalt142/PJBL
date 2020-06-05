@@ -8,7 +8,7 @@
                     <h3 class="card-title font-weight-bold text-center">Lengkapi akun anda</h3>
                     <div class="text-center">Isi data diri anda sebagai siswa untuk melanjutkan.</div>
 
-                    <form action="{{ url('profile-setup') }}" method="POST" class="mt-4">
+                    <form action="{{ route('profile-setup-post') }}" method="POST" class="mt-4">
                         @csrf
                         <div class="form-group">
                             <label for="nis">Nomor Induk Siswa</label>

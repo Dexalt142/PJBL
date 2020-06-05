@@ -87,7 +87,7 @@
                 <h5 class="modal-title">Buat project baru</h5>
             </div>
             <div class="modal-body">
-                <form action="{{ url('/guru/project/buat') }}" method="POST">
+                <form action="{{ route('guru-project-create') }}" method="POST">
                     @csrf
                     <input type="hidden" name="r" value="{{ route('guru-kelas-detail', $kelas->kode_kelas) }}">
                     <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">

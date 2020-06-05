@@ -39,7 +39,7 @@
                 <h5 class="modal-title">Gabung ke dalam kelas</h5>
             </div>
             <div class="modal-body">
-                <form action="{{ url('/siswa/kelas/gabung') }}" method="POST">
+                <form action="{{ route('siswa-kelas-join') }}" method="POST">
                     @csrf
                     <input type="hidden" name="r" value="{{ route('siswa-dashboard') }}">
                     <div class="form-group">
@@ -71,7 +71,7 @@
 
     <script>
         $(".card-kelas").on('click', function() {
-            var target = "{{ url('siswa/kelas') }}";
+            var target = "{{ route('siswa-kelas-detail', '') }}";
             target = target + '/' + $(this).attr('kelas-target');
             window.location.href = target;
         });

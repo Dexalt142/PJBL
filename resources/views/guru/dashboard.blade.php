@@ -119,7 +119,7 @@
 
     <script>
         $(".card-kelas").on('click', function() {
-            var target = "{{ url('guru/kelas') }}";
+            var target = "{{ route('guru-kelas-detail', '') }}";
             target = target + '/' + $(this).attr('kelas-target');
             window.location.href = target;
         });

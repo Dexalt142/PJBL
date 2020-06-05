@@ -32,7 +32,7 @@ Route::middleware('guest')->group(function() {
 
 Route::middleware('auth')->group(function() {
     Route::get('profile-setup', 'Auth\ProfileController@showSetupPage')->name('profile-setup');
-    Route::post('profile-setup', 'Auth\ProfileController@setupProfile');
+    Route::post('profile-setup', 'Auth\ProfileController@setupProfile')->name('profile-setup-post');
     Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 });
 
@@ -82,7 +82,7 @@ Route::middleware('siswa', 'user-validated')->group(function() {
     Route::prefix('siswa')->group(function() {
         Route::prefix('kelas')->group(function() {
             Route::get('{kelas}', 'SiswaPageController@viewKelas')->name('siswa-kelas-detail');
-            Route::post('gabung', 'KelasController@gabungKelas');
+            Route::post('gabung', 'KelasController@gabungKelas')->name('siswa-kelas-join');
 
             Route::prefix('{kelas}')->group(function() {
                 Route::prefix('project')->group(function() {

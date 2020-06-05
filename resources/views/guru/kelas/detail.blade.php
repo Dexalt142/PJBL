@@ -214,7 +214,7 @@
                 },
                 success: function(response) {
                     if(response.success == 'true') {
-                        window.location.href = '{{ url("guru/kelas") }}' + '/' + response.kode_kelas;
+                        window.location.href = '{{ route("guru-kelas-detail", '') }}' + '/' + response.kode_kelas;
                     }
                 }
             });

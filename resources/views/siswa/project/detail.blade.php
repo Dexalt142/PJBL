@@ -59,7 +59,7 @@
                         <h5 class="modal-title">Buat kelompok</h5>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ url("/guru/project/$project->id/gen-kelompok") }}" method="POST">
+                        <form action="{{ route("guru-kelompok-generate", $project->id) }}" method="POST">
                             @csrf
                             <input type="hidden" name="id_project" value="{{ $project->id }}">
                             <div class="form-group">
