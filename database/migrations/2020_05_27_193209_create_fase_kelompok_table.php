@@ -17,6 +17,7 @@ class CreateFaseKelompokTable extends Migration {
             $table->string("jawaban_file")->nullable();
             $table->string("status", 1);
             $table->integer("nilai")->nullable();
+            $table->mediumText("evaluasi")->nullable();
             $table->unsignedBigInteger("fase_id");
             $table->unsignedBigInteger("kelompok_id");
             $table->foreign("fase_id")->references("id")->on("fase");
