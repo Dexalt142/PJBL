@@ -9,7 +9,7 @@ class FaseKelompok extends Model {
     protected $table = 'fase_kelompok';
 
     protected $fillable = [
-        'jawaban', 'jawaban_file', 'status', 'fase_id', 'kelompok_id', 'nilai',
+        'jawaban', 'jawaban_file', 'status', 'fase_id', 'kelompok_id', 'nilai', 'evaluasi'
     ];
 
     public function kelompok() {

@@ -24,6 +24,7 @@ class APIController extends Controller {
                     'jawaban_file' => $fk->jawaban_file,
                     'status' => $fk->status,
                     'nilai' => $fk->nilai,
+                    'evaluasi' => $fk->evaluasi,
                 ]
             ];
         }
