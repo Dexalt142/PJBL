@@ -100,9 +100,9 @@
                     <h5 class="modal-title">Buat fase baru</h5>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('guru-fase-create', $project->id) }}" method="POST">
+                    <form action="{{ route('guru-fase-create', [$project->kelas->kode_kelas, $project->id]) }}" method="POST">
                         @csrf
-                        <input type="hidden" name="r" value="{{ route('guru-project-detail', $project->id) }}">
+                        <input type="hidden" name="r" value="{{ route('guru-project-detail', [$project->kelas->kode_kelas, $project->id]) }}">
                         <div class="form-group">
                             <label for="nama_fase">Nama fase</label>
                             <input type="text" class="form-control @error('nama_fase') is-invalid @enderror" name="nama_fase" placeholder="Nama fase" value="{{ old('nama_fase') }}" required>

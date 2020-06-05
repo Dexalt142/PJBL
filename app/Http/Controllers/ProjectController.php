@@ -40,7 +40,7 @@ class ProjectController extends Controller {
         return view('guru.project.project', compact('projects'));
     }
 
-    public function viewProject($project) {
+    public function viewProject($kelas, $project) {
         $project = Project::where('id', $project)->firstOrFail();
         if($project->kelas->guru != auth()->user()->detail) {
             abort(404);
@@ -48,7 +48,7 @@ class ProjectController extends Controller {
         return view('guru.project.detail', compact('project'));
     }
 
-    public function viewFase($project, $fase) {
+    public function viewFase($kelas, $project, $fase) {
         $fase = Fase::where('id', $fase)->firstOrFail();
         if($fase->project->kelas->guru != auth()->user()->detail) {
             abort(404);
@@ -56,7 +56,7 @@ class ProjectController extends Controller {
         return view('guru.fase.detail', compact('fase'));
     }
 
-    public function buatFase($project, Request $request) {
+    public function buatFase($kelas, $project, Request $request) {
         $validated = $request->validate([
             'nama_fase' => ['required', 'string'],
             'materi' => ['required', 'string'],
@@ -78,7 +78,7 @@ class ProjectController extends Controller {
         }
     }
 
-    public function editFase(Request $request) {
+    public function editFase($kelas, $project, $fase, Request $request) {
         $validated = $request->validate([
             'id' => ['required', 'integer'],
             'nama_fase' => ['required', 'string'],
@@ -131,7 +131,7 @@ class ProjectController extends Controller {
         return redirect()->back()->with('jawabanSuccess', true);
     }
 
-    public function nilaiFase(Request $request) {
+    public function nilaiFase($kelas, $project, $fase, Request $request) {
         $validated = $request->validate([
             'fk_id' => ['required', 'integer'],
             'nilai' => ['required', 'integer'],
@@ -147,7 +147,7 @@ class ProjectController extends Controller {
         }
     }
 
-    public function generateKelompok(Request $request) {
+    public function generateKelompok($kelas, $project, Request $request) {
         $validated = $request->validate([
             'id_project' => ['exists:project,id', 'required'],
             'jumlah_siswa' => ['required', 'integer']

@@ -28,7 +28,7 @@
                                     $prog = $kelompok->fase->sortByDesc('id')->first();
                                 @endphp
                                 @if ($prog)
-                                    <a href="{{ route('guru-fase-detail', [$prog->project_id, $prog->id]) }}">{{ $prog->nama_fase }}</a>
+                                    <a href="{{ route('guru-fase-detail', [$prog->project->kelas->kode_kelas, $prog->project_id, $prog->id]) }}">{{ $prog->nama_fase }}</a>
                                 @else
                                     Belum mengerjakan
                                 @endif

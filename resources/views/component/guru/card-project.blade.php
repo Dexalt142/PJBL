@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-3 mb-4">
                     <h4 class="m-0 f-w-700">
-                        <a href="{{ route("guru-project-detail", $project->id) }}">{{ $project->nama_project }}</a>
+                        <a href="{{ route("guru-project-detail", [$project->kelas->kode_kelas, $project->id]) }}">{{ $project->nama_project }}</a>
                     </h4>
                     <span class="badge badge-pill badge-primary">
                         {{ $project->kelas->nama }}

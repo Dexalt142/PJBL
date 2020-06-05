@@ -42,7 +42,7 @@
                         <a href=""><ion-icon name="cube-outline"></ion-icon> Kelas</a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{ route('guru-project') }}"><ion-icon name="albums-outline"></ion-icon> Project</a>
+                        {{-- <a href="{{ route('guru-project') }}"><ion-icon name="albums-outline"></ion-icon> Project</a> --}}
                     </li>
                 </ul>
             </div>

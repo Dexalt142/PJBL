@@ -6,7 +6,7 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('guru-dashboard') }}">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="{{ route('guru-kelas-detail', $fase->project->kelas->kode_kelas) }}">{{ $fase->project->kelas->nama }}</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('guru-project-detail', $fase->project->id) }}">{{ $fase->project->nama_project }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('guru-project-detail', [$fase->project->kelas->kode_kelas, $fase->project->id]) }}">{{ $fase->project->nama_project }}</a></li>
     <li class="breadcrumb-item active">{{ $fase->nama_fase }}</li>
 @endsection
 
@@ -26,7 +26,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('guru-fase-edit', [$fase->project->id, $fase->id]) }}" method="POST">
+                            <form action="{{ route('guru-fase-edit', [$fase->project->kelas->kode_kelas, $fase->project->id, $fase->id]) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $fase->id }}">
                                 <div class="form-group">
@@ -180,7 +180,7 @@
                 </div>
 
                 <hr>
-                <form action="{{ route('guru-fase-nilai', [$fase->project->id, $fase->id]) }}" method="POST">
+                <form action="{{ route('guru-fase-nilai', [$fase->project->kelas->kode_kelas, $fase->project->id, $fase->id]) }}" method="POST">
                     @csrf
                     <input type="hidden" name="fk_id">
                     <div class="form-group">

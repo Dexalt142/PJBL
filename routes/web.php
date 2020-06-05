@@ -41,34 +41,34 @@ Route::middleware('guru', 'user-validated')->group(function() {
     
     Route::prefix('guru')->group(function() {
         Route::prefix('kelas')->group(function() {
-            Route::get('{kelas}', 'GuruPageController@viewKelas')->name('guru-kelas-detail');
-
             Route::post('buat', 'KelasController@buatKelas')->name('guru-kelas-create');
-            Route::post('{kelas}/undang', 'KelasController@undangSiswa')->name('guru-kelas-invite');
-            Route::post('{kelas}/edit', 'KelasController@editKelas')->name('guru-kelas-edit');
-            Route::post('{kelas}/gencode', 'KelasController@generateNewCode')->name('guru-kelas-gencode');
-        });
-        
-        Route::prefix('project')->group(function() {
-            Route::get('/', 'ProjectController@showProjectPage')->name('guru-project');
-            Route::get('{project}', 'ProjectController@viewProject')->name('guru-project-detail');
             
-            Route::post('{id_project}/fase/buat', 'ProjectController@buatFase')->name('guru-fase-create');
-            Route::post('buat', 'ProjectController@buatProject')->name('guru-project-create');
-            Route::post('{project}/genkel', 'ProjectController@generateKelompok')->name('guru-kelompok-generate');
+            Route::prefix('{kelas}')->group(function() {
+                Route::get('/', 'GuruPageController@viewKelas')->name('guru-kelas-detail');
 
-            Route::prefix('{project}')->group(function() {
-                Route::get('/fase/{fase}', 'ProjectController@viewFase')->name('guru-fase-detail');
-                Route::post('/fase/{fase}/edit', 'ProjectController@editFase')->name('guru-fase-edit');
-                Route::post('/fase/{fase}/nilai', 'ProjectController@nilaiFase')->name('guru-fase-nilai');
+                Route::post('undang', 'KelasController@undangSiswa')->name('guru-kelas-invite');
+                Route::post('edit', 'KelasController@editKelas')->name('guru-kelas-edit');
+                Route::post('gencode', 'KelasController@generateNewCode')->name('guru-kelas-gencode');
+    
+    
+                Route::get('project', 'ProjectController@showProjectPage')->name('guru-project');
+                Route::get('{project}', 'ProjectController@viewProject')->name('guru-project-detail');
+                
+                Route::post('{project}/fase/buat', 'ProjectController@buatFase')->name('guru-fase-create');
+                Route::post('project/buat', 'ProjectController@buatProject')->name('guru-project-create');
+                Route::post('{project}/genkel', 'ProjectController@generateKelompok')->name('guru-kelompok-generate');
+    
+                Route::prefix('{project}')->group(function() {
+                    Route::get('{fase}', 'ProjectController@viewFase')->name('guru-fase-detail');
+                    Route::post('{fase}/edit', 'ProjectController@editFase')->name('guru-fase-edit');
+                    Route::post('{fase}/nilai', 'ProjectController@nilaiFase')->name('guru-fase-nilai');
+                });
             });
-        });
 
+        });
 
     });
-});
 
-Route::middleware('guru', 'user-validated')->group(function() {
     Route::prefix('api')->group(function() {
         Route::post('fase-detail', 'APIController@faseDetail')->name('api-fase-detail');
     });
@@ -85,15 +85,11 @@ Route::middleware('siswa', 'user-validated')->group(function() {
             Route::post('gabung', 'KelasController@gabungKelas')->name('siswa-kelas-join');
 
             Route::prefix('{kelas}')->group(function() {
-                Route::prefix('project')->group(function() {
-                    Route::get('{id_project}', 'SiswaPageController@viewProject')->name('siswa-project-detail');
+                Route::get('{project_id}', 'SiswaPageController@viewProject')->name('siswa-project-detail');
 
-                    Route::prefix('{project}')->group(function() {
-                        Route::prefix('fase')->group(function() {
-                            Route::get('{fase}', 'SiswaPageController@viewFase')->name('siswa-fase-detail');
-                            Route::post('{fase}/jawab', 'ProjectController@answerFase')->name('siswa-fase-answer');
-                        });
-                    });
+                Route::prefix('{project}')->group(function() {
+                    Route::get('{fase}', 'SiswaPageController@viewFase')->name('siswa-fase-detail');
+                    Route::post('{fase}/jawab', 'ProjectController@answerFase')->name('siswa-fase-answer');
                 });
 
             });

@@ -80,53 +80,9 @@
         </section>
     </div>
 
-    <div class="modal fade" id="keluarKelasModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Buat project baru</h5>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('guru-project-create') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="r" value="{{ route('guru-kelas-detail', $kelas->kode_kelas) }}">
-                    <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">
-                    <div class="form-group">
-                        <label for="nama_project">Nama project</label>
-                        <input type="text" class="form-control @error('nama_project') is-invalid @enderror" name="nama_project" placeholder="Nama project" value="{{ old('nama_project') }}" required>
-                        @error('nama_project')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-link" data-dismiss="modal">Tutup</button>
-                <button type="submit" class="btn btn-primary">Buat project</button>
-                </form>
-            </div>
-            </div>
-        </div>
-    </div>
-
 @endsection
 
 
 @section('scripts')
-    @error('nama_kelas')
-        <script>
-            $("#editKelasModal").modal('show');
-        </script>
-    @enderror
-    @error('nama_project')
-        <script>
-            $("#createProjectModal").modal('show');
-        </script>
-    @enderror
-    @error('undang_siswa')
-        <script>
-            $("#inviteStudentModal").modal('show');
-        </script>
-    @enderror
+    
 @endsection

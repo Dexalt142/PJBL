@@ -25,16 +25,16 @@ class SiswaPageController extends Controller {
         return view('siswa.kelas.detail', compact('kelas'));
     }    
     
-    public function viewProject($kode_kelas, $id_project) {
+    public function viewProject($kode_kelas, $project_id) {
         $kelas = Kelas::where('kode_kelas', $kode_kelas)->first();
         if($kelas->siswa->contains(auth()->user()->detail)) {
-            $project = $kelas->project->where('id', $id_project)->first();
+            $project = $kelas->project->where('id', $project_id)->first();
             if($project) {
                 $kel = DB::table('kelompok_anggota')->where('siswa_id', auth()->user()->detail->id)->get();
                 $kelompok = null;
                 foreach ($kel as $k) {
                     $ktemp = Kelompok::find($k->kelompok_id);
-                    if($ktemp->project_id == $id_project) {
+                    if($ktemp->project_id == $project_id) {
                         $kelompok = $ktemp;
                     }
                 }

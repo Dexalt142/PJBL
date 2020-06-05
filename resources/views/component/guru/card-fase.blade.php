@@ -70,7 +70,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <a href="{{ route('guru-fase-detail', [$fase->project->id, $fase->id]) }}" class="btn btn-primary">Detail</a>
+                        <a href="{{ route('guru-fase-detail', [$fase->project->kelas->kode_kelas, $fase->project->id, $fase->id]) }}" class="btn btn-primary">Detail</a>
                     </div>
                 </div>
             </div>
