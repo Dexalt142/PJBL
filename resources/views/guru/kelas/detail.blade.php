@@ -21,8 +21,8 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('guru-dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Kelas</li>
-@endsection
+    <li class="breadcrumb-item active">{{ $kelas->nama }}</li>
+    @endsection
 
 @section('content')
     <div class="container-fluid">

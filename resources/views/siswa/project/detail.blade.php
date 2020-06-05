@@ -54,17 +54,5 @@
 @endsection
 
 @section('scripts')
-    <script>
-        console.log()
-        $("input[name='jumlah_siswa']").on('input', function() {
-            var hint = $("#kelhint");
-            var jumlahSiswa = $(this).attr('jumlah-siswa');
-            var curr = $(this).val();
-            if(curr < 1 || curr > jumlahSiswa || curr == "") {
-                hint.text("Jumlah kelompok: -");
-            } else {
-                hint.text("Jumlah kelompok: " + (jumlahSiswa / curr));
-            }
-        });
-    </script>
+
 @endsection

@@ -18,7 +18,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('siswa-dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Kelas</li>
+    <li class="breadcrumb-item active">{{ $kelas->nama }}</li>
 @endsection
 
 @section('content')

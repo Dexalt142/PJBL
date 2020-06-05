@@ -68,7 +68,7 @@
                         <h5 class="modal-title">Buat kelompok</h5>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route("guru-kelompok-generate", $project->id) }}" method="POST">
+                        <form action="{{ route("guru-kelompok-generate", [$project->kelas->kode_kelas, $project->id]) }}" method="POST">
                             @csrf
                             <input type="hidden" name="id_project" value="{{ $project->id }}">
                             <div class="form-group">
@@ -159,7 +159,6 @@
 
 @section('scripts')
     <script>
-        console.log()
         $("input[name='jumlah_siswa']").on('input', function() {
             var hint = $("#kelhint");
             var jumlahSiswa = $(this).attr('jumlah-siswa');
