@@ -224,9 +224,13 @@
                         modal.find(".modal-title").html("{{ $fase->nama_fase }} - " + kel);
                         modal.find("textarea[name='jawaban']").html(response.data.jawaban);
                         if(response.data.jawaban_file) {
-                            modal.find("a[name='jawaban_file']").attr('href', "{{ url(config('app.answer_files')) }}/" + response.data.jawaban_file).html(response.data.jawaban_file);
+                            var fileName = response.data.jawaban_file;
+                            if(fileName.length = 35) {
+                                fileName = fileName.substr(0, 35) + "...";
+                            }
+                            modal.find("a[name='jawaban_file']").attr('href', "{{ url(config('app.answer_files')) }}/" + response.data.jawaban_file).html(fileName);
                         } else {
-                            modal.find("a[name='jawaban_file']").html("Tidak ada file jawaban");
+                            modal.find("a[name='jawaban_file']").attr('href', '#').html("Tidak ada file jawaban");
                         }
                         modal.find("input[name='nilai']").val(response.data.nilai);
                         modal.find("textarea[name='evaluasi']").val(response.data.evaluasi);
