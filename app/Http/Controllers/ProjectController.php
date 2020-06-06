@@ -45,7 +45,17 @@ class ProjectController extends Controller {
         if($project->kelas->guru != auth()->user()->detail) {
             abort(404);
         }
-        return view('guru.project.detail', compact('project'));
+
+        $noGroup = $project->kelas->siswa;
+        foreach ($project->kelompok as $kelompok) {
+            foreach ($kelompok->anggota() as $anggota) {
+                if($noGroup->contains($anggota)) {
+                    $noGroup = $noGroup->keyBy('id');
+                    $noGroup->forget($anggota->id);
+                }
+            }
+        }
+        return view('guru.project.detail', compact('project', 'noGroup'));
     }
 
     public function viewFase($kelas, $project, $fase) {
@@ -109,7 +119,7 @@ class ProjectController extends Controller {
         $validated['status'] = 1;
         $fk = FaseKelompok::where(['fase_id' => $validated['fase_id'], 'kelompok_id' => $validated['kelompok_id']])->first();
         if($fk) {
-            if($request->file('jawaban_file')) {
+            if($request->file('jawaban_file')) { 
                 $filename = Str::random(10).'_'.$request->file('jawaban_file')->getClientOriginalName();
                 $path = Storage::disk('answer_files')->putFileAs('', $request->file('jawaban_file'), $filename);
     
@@ -169,9 +179,8 @@ class ProjectController extends Controller {
                 if(!$kelompok) {
                     $kelompok = Kelompok::create(['project_id' => $proj->id, 'nama_kelompok' => $nama]);
                 }
-                $ksid = DB::table('kelas_siswa')->where(['siswa_id' => $siswa->id, 'kelas_id' => $proj->kelas->id])->first('id');
                 
-                DB::table('kelompok_anggota')->insert(['kelompok_id' => $kelompok->id, 'siswa_id' => $ksid->id, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
+                DB::table('kelompok_anggota')->insert(['kelompok_id' => $kelompok->id, 'siswa_id' => $siswa->pivot->id, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
                     
                 if($n % $max == 0) {
                     $k++;
@@ -179,6 +188,26 @@ class ProjectController extends Controller {
                 $n++;
             }
 
+        }
+
+        return redirect()->back();
+    }
+
+    public function hapusAnggota(Request $request) {
+        $res = ['success' => false];
+        $kelompok = Kelompok::where('id', $request->kelompok_id)->first();
+        if($kelompok) {
+            if($kelompok->hapusAnggota($request->siswa_id)) {
+                $res['success'] = true;
+            }
+        }
+        return response()->json($res);
+    }
+
+    public function tambahAnggota(Request $request) {
+        $kelompok = Kelompok::where('id', $request->tambah_kel_id)->first();
+        if($kelompok) {
+            DB::table('kelompok_anggota')->insert(['kelompok_id' => $kelompok->id, 'siswa_id' => $request->siswa_id, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
         }
 
         return redirect()->back();

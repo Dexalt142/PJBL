@@ -34,4 +34,22 @@ class Kelompok extends Model {
         return FaseKelompok::where(['fase_id' => $fase_id, 'kelompok_id' => $this->id])->first();
     }
 
+    public function project() {
+        return $this->belongsTo('App\Project');
+    }
+
+    public function hapusAnggota($id) {
+        $del = DB::table('kelompok_anggota')->where(['kelompok_id' => $this->id, 'siswa_id' => $id])->delete();
+        if($del) {
+            return true;
+        }
+    }
+
+    public function tambahAnggota($id) {
+        $del = DB::table('kelompok_anggota')->where(['kelompok_id' => $this->id, 'siswa_id' => $id])->delete();
+        if($del) {
+            return true;
+        }
+    }
+
 }

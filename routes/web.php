@@ -63,6 +63,8 @@ Route::middleware('guru', 'user-validated')->group(function() {
                     Route::get('{fase}', 'ProjectController@viewFase')->name('guru-fase-detail');
                     Route::post('{fase}/edit', 'ProjectController@editFase')->name('guru-fase-edit');
                     Route::post('{fase}/nilai', 'ProjectController@nilaiFase')->name('guru-fase-nilai');
+                    Route::post('tambah-anggota', 'ProjectController@tambahAnggota')->name('guru-anggota-tambah');
+                    Route::post('hapus-anggota', 'ProjectController@hapusAnggota')->name('guru-anggota-hapus');
                 });
             });
 
@@ -71,7 +73,8 @@ Route::middleware('guru', 'user-validated')->group(function() {
     });
 
     Route::prefix('api')->group(function() {
-        Route::post('fase-detail', 'APIController@faseDetail')->name('api-fase-detail');
+        Route::post('fase/detail', 'APIController@faseDetail')->name('api-fase-detail');
+        Route::post('anggota', 'APIController@getAnggotaKelompok')->name('api-anggota');
     });
 });
 

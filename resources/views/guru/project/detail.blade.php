@@ -14,7 +14,7 @@
         <section class="section">
             <div class="section-header">
                 <div class="section-title">
-                    Kelompok
+                    Kelompok {{ ($noGroup->count() > 0) ? ("- ".$noGroup->count()." siswa belum memiliki kelompok") : '' }}
                 </div>
                 <div class="section-menu">
                     @if ($project->kelompok->count() == 0)
@@ -33,7 +33,24 @@
                     Belum ada kelompok yang dibuat 
                 </div>
                 @endforelse
+
             </div>
+            @if ($noGroup->count() > 0)
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-title">Siswa yang belum memiliki kelompok</div>
+                                @foreach ($noGroup as $siswa)
+                                <div>
+                                    {{ $loop->iteration.". ".$siswa->nama_lengkap }}
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </section>
 
         <section class="section">
@@ -87,6 +104,50 @@
                             <button type="button" class="btn btn-link" data-dismiss="modal">Tutup</button>
                             <button type="submit" class="btn btn-primary">Buat</button>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if ($project->kelompok->count() > 0)   
+        <div class="modal fade" id="editKelompokModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Kelompok</h5>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <div>
+                            <div class="form-group">
+                                <label for="">Anggota</label>
+                                <div class="list-anggota"></div>
+                            </div>
+                        </div>
+
+                        @if ($noGroup->count() > 0)
+                        <hr>
+                        <form action="{{ route('guru-anggota-tambah', [$project->kelas->kode_kelas, $project->id]) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="tambah_kel_id">
+                            <div class="form-group">
+                                <label for="tambah_anggota">Tambah Anggota</label>
+                                <select name="siswa_id" class="form-control">
+                                    @foreach ($noGroup as $siswa)
+                                        <option value="{{ $siswa->pivot->id }}">{{ $siswa->nama_lengkap }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-sm btn-primary">Tambah anggota</button>
+                            </div>
+                        </form>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Tutup</button>
                     </div>
                 </div>
             </div>
@@ -159,6 +220,61 @@
 
 @section('scripts')
     <script>
+        var anggotaChanged = false;
+
+        $(".edit-kelompok").on('click', function() {
+            var btn = $(this);
+            $("input[name='tambah_kel_id']").val(btn.data('kelompok-id'));
+            $.ajax({
+                url: "{{ route('api-anggota') }}",
+                method: "POST",
+                data: {
+                    '_token': "{{ csrf_token() }}",
+                    'kelompok_id': btn.data('kelompok-id')
+                },
+                success: function(response) {
+                    if(response.success) {
+                        var list = $(".list-anggota");
+                        list.html("");
+                        for(let i = 0; i < response.data.length; i++) {
+                            let anggota = "<div class='mb-3 d-flex anggota-item'><span>" + ((i+1) + ". ") + response.data[i].nama_lengkap + "</span><span class='ml-auto'><button class='btn btn-sm btn-danger btn-hapus-anggota' data-kelid='" + btn.data('kelompok-id') + "' data-sisid='" + response.data[i].id + "'>Hapus</button></span></div>";
+                            list.append(anggota);
+                        }
+                        $("#editKelompokModal").modal('show');
+                    }
+                }
+            });
+        });
+
+        $(".list-anggota").on('click', '.btn-hapus-anggota', function() {
+            if(confirm("Apakah anda yakin akan menghapus anggota ini?")) {
+                var btn = $(this);
+                $.ajax({
+                    url: "{{ route('guru-anggota-hapus', [$project->kelas->kode_kelas, $project->id]) }}",
+                    method: "POST",
+                    data: {
+                        '_token': "{{ csrf_token() }}",
+                        'kelompok_id': btn.data('kelid'),
+                        'siswa_id': btn.data('sisid')
+                    },
+                    success: function(response) {
+                        if(response.success) {
+                            btn.closest('.anggota-item').fadeOut('normal', function() {
+                                $(this).remove();
+                            });
+                            anggotaChanged = true;
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#editKelompokModal').on('hidden.bs.modal', function() {
+            if(anggotaChanged) {
+                location.reload();
+            }
+        });
+
         $("input[name='jumlah_siswa']").on('input', function() {
             var hint = $("#kelhint");
             var jumlahSiswa = $(this).attr('jumlah-siswa');

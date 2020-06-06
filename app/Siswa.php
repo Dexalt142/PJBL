@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class Siswa extends Model {
 
@@ -15,6 +16,11 @@ class Siswa extends Model {
 
     public function kelas() {
         return $this->belongsToMany('App\Kelas');
+    }
+
+    public function getKelasSiswaId($kelas) {
+        $siswa = DB::table('kelas_siswa')->where(['siswa_id' => $this->id, 'kelas_id' => $kelas])->first();
+        return $siswa->id;
     }
 
     public function project() {

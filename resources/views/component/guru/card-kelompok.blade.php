@@ -36,6 +36,10 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-12">
+                    <button class="btn btn-primary edit-kelompok" data-kelompok-id="{{ $kelompok->id }}">Edit</button>
+                </div>
             </div>
         </div>
     </div>
