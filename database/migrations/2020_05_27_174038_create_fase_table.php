@@ -19,7 +19,7 @@ class CreateFaseTable extends Migration {
             $table->string("fase_type", 50);
             $table->string("fase_ke", 5);
             $table->unsignedBigInteger("project_id");
-            $table->foreign("project_id")->references("id")->on("project");
+            $table->foreign("project_id")->references("id")->on("project")->onDelete('cascade');
             $table->timestamps();
         });
     }

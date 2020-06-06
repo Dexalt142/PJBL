@@ -20,8 +20,8 @@ class CreateFaseKelompokTable extends Migration {
             $table->mediumText("evaluasi")->nullable();
             $table->unsignedBigInteger("fase_id");
             $table->unsignedBigInteger("kelompok_id");
-            $table->foreign("fase_id")->references("id")->on("fase");
-            $table->foreign("kelompok_id")->references("id")->on("kelompok");
+            $table->foreign("fase_id")->references("id")->on("fase")->onDelete('cascade');
+            $table->foreign("kelompok_id")->references("id")->on("kelompok")->onDelete('cascade');
             $table->timestamps();
         });
     }

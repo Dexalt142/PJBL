@@ -20,7 +20,7 @@ class CreateGuruTable extends Migration {
             $table->string("alamat");
             $table->string("agama", 50);
             $table->unsignedBigInteger("user_id")->unique();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ class CreateKelompokTable extends Migration {
             $table->id();
             $table->string("nama_kelompok")->nullable();
             $table->unsignedBigInteger("project_id");
-            $table->foreign("project_id")->references("id")->on('project');
+            $table->foreign("project_id")->references("id")->on('project')->onDelete('cascade');
             $table->timestamps();
         });
     }

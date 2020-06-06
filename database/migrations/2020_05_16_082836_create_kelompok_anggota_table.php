@@ -15,8 +15,8 @@ class CreateKelompokAnggotaTable extends Migration {
             $table->id();
             $table->unsignedBigInteger("kelompok_id");
             $table->unsignedBigInteger("siswa_id");
-            $table->foreign("kelompok_id")->references("id")->on("kelompok");
-            $table->foreign("siswa_id")->references("id")->on("kelas_siswa");
+            $table->foreign("kelompok_id")->references("id")->on("kelompok")->onDelete('cascade');
+            $table->foreign("siswa_id")->references("id")->on("kelas_siswa")->onDelete('cascade');
             $table->timestamps();
         });
     }

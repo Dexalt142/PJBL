@@ -15,8 +15,8 @@ class CreateKelasSiswaTable extends Migration {
             $table->id();
             $table->unsignedBigInteger("kelas_id");
             $table->unsignedBigInteger("siswa_id");
-            $table->foreign("kelas_id")->references("id")->on("kelas");
-            $table->foreign("siswa_id")->references("id")->on("siswa");
+            $table->foreign("kelas_id")->references("id")->on("kelas")->onDelete('cascade');
+            $table->foreign("siswa_id")->references("id")->on("siswa")->onDelete('cascade');
             $table->datetime("tanggal_masuk");
         });
     }

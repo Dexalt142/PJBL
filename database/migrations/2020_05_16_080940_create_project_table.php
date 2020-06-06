@@ -15,7 +15,7 @@ class CreateProjectTable extends Migration {
             $table->id();
             $table->string("nama_project");
             $table->unsignedBigInteger("kelas_id");
-            $table->foreign("kelas_id")->references("id")->on("kelas");
+            $table->foreign("kelas_id")->references("id")->on("kelas")->onDelete('cascade');
             $table->timestamps();
         });
     }
