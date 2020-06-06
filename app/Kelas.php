@@ -17,7 +17,7 @@ class Kelas extends Model {
     }
 
     public function siswa() {
-        return $this->belongsToMany('App\Siswa');
+        return $this->belongsToMany('App\Siswa')->withPivot('id');
     }
 
     public function project() {
