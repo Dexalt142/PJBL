@@ -32,6 +32,36 @@ class ProjectController extends Controller {
         }
     }
 
+    public function editProject(Request $request, $kelas) {
+        $validated = $request->validate([
+            'nama_project' => ['required', 'string', 'min:5'],
+        ]);
+
+        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        if($kelas) {
+            $project = $kelas->project->where('id', $request->project)->first();
+            if($project) {
+                $project->nama_project = $request->nama_project;
+                $project->save();
+                return redirect()->back();
+            }
+        }
+        return redirect()->back()->withErrors(['nama_project' => 'Terjadi kesalahan']);
+    }
+
+    public function hapusProject(Request $request, $kelas, $project) {
+        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        if($kelas) {
+            $project = $kelas->project->where('id', $request->project)->first();
+            if($project) {
+                $project->delete();
+                return redirect()->route('guru-kelas-detail', $kelas->kode_kelas);
+            }
+        }
+
+        return redirect()->back();
+    }
+
     public function showProjectPage() {
         $projects = new Collection;
         foreach(auth()->user()->detail->kelas as $kelas) {

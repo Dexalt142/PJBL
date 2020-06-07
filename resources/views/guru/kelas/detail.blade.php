@@ -26,7 +26,6 @@
 
 @section('content')
     <div class="container-fluid">
-
         <section class="section">
             <div class="section-header">
                 <div class="section-title">
@@ -82,7 +81,7 @@
                                                 <td>{{ $siswa->nama_lengkap }}</td>
                                                 <td>{{ Carbon\Carbon::parse($siswa->tanggal_lahir)->format("d M Y") }}</td>
                                                 <td>{{ ($siswa->jenis_kelamin == 1) ? 'Laki-laki' : 'Perempuan' }}</td>
-                                                <td><button class="btn btn-sm btn-danger">Hapus</button></td>
+                                                <td><button class="btn btn-sm btn-danger hapusSiswaButton" data-siswa="{{ $siswa->pivot->id }}">Hapus</button></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -226,6 +225,27 @@
     @enderror
 
     <script>
+
+        $(".hapusSiswaButton").on('click', function() {
+            var btn = $(this);
+            if(confirm('Apakah anda yakin akan menghapus siswa ini?')) {
+                $.ajax({
+                    url: "{{ route('guru-kelas-hapussiswa', $kelas->kode_kelas) }}",
+                    method: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "siswa": btn.data('siswa')
+                    },
+                    success: function(response) {
+                        if(response.success) {
+                            btn.closest('tr').fadeOut('normal', function() {
+                                $(this).remove();
+                            });
+                        }
+                    }
+                });
+            }
+        });
 
         $("#generateKodeKelas").on('click', function() {
             $.ajax({

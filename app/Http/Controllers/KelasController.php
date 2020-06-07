@@ -36,12 +36,29 @@ class KelasController extends Controller {
             'nama_kelas' => ['required', 'string', 'min:5'],
         ]);
 
-        $k = Kelas::where(['kode_kelas' => $kelas])->firstOrFail();
-        $k->nama = $validated['nama_kelas'];
-
-        if($k->save()) {
-            return redirect()->route('guru-kelas-detail', $kelas);
+        $k = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        if($k) {
+            $k->nama = $validated['nama_kelas'];
+    
+            if($k->save()) {
+                return redirect()->route('guru-kelas-detail', $kelas);
+            }
         }
+
+        return redirect()->back();
+    }
+
+    public function hapusKelas(Request $request, $kelas) {
+        $validated = $request->validate([
+            'kode_kelas' => ['required', 'string'],
+        ]);
+
+        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $request->kode_kelas)->first();
+        if($kelas) {
+            $kelas->delete();
+        }
+
+        return redirect()->route('guru-dashboard');
     }
 
     public function generateNewCode(Request $request, $kelas) {
@@ -97,6 +114,21 @@ class KelasController extends Controller {
         } else {
             return redirect()->to($request->r)->withErrors(['kode_kelas' => 'Kelas tidak ditemukan']);
         }
+    }
+
+    public function hapusSiswa(Request $request, $kelas) {
+        $res = ['success' => false];
+        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        if($kelas) {
+            foreach($kelas->siswa as $siswa) {
+                if($siswa->pivot->id == $request->siswa) {
+                    DB::table('kelas_siswa')->where(['id' => $siswa->pivot->id])->delete();
+                    $res['success'] = true;
+                }
+            }
+        }
+
+        return response()->json($res);
     }
 
 }

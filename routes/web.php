@@ -50,6 +50,8 @@ Route::middleware('guru', 'user-validated')->group(function() {
 
                 Route::post('undang', 'KelasController@undangSiswa')->name('guru-kelas-invite');
                 Route::post('edit', 'KelasController@editKelas')->name('guru-kelas-edit');
+                Route::post('hapus', 'KelasController@hapusKelas')->name('guru-kelas-hapus');
+                Route::post('hapussiswa', 'KelasController@hapusSiswa')->name('guru-kelas-hapussiswa');
                 Route::post('gencode', 'KelasController@generateNewCode')->name('guru-kelas-gencode');
     
     
@@ -57,6 +59,8 @@ Route::middleware('guru', 'user-validated')->group(function() {
                 
                 Route::post('{project}/fase/buat', 'ProjectController@buatFase')->name('guru-fase-create');
                 Route::post('project/buat', 'ProjectController@buatProject')->name('guru-project-create');
+                Route::post('{project}/edit', 'ProjectController@editProject')->name('guru-project-edit');
+                Route::post('{project}/hapus', 'ProjectController@hapusProject')->name('guru-project-hapus');
                 Route::post('{project}/genkel', 'ProjectController@generateKelompok')->name('guru-kelompok-generate');
     
                 Route::prefix('{project}')->group(function() {

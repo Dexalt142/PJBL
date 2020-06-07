@@ -1,7 +1,20 @@
 @extends('layouts.guru')
 
 @section('page-title', $project->nama_project)
-@section('page-header', $project->nama_project)
+
+@section('page-header')
+    {{ $project->nama_project }}
+    <div class="dropdown d-inline-block">
+        <button class="btn btn-link dropdown-toggle" type="button" id="kelasMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Pengaturan
+        </button>
+        <div class="dropdown-menu" aria-labelledby="kelasMenuButton">
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editProjectModal">Edit</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteProjectModal">Hapus</a>
+        </div>
+    </div>
+@endsection
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('guru-dashboard') }}">Dashboard</a></li>
@@ -154,6 +167,57 @@
         </div>
     @endif
 
+    <div class="modal fade" id="editProjectModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit project</h5>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route("guru-project-edit" , [$project->kelas->kode_kelas, $project->id]) }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="project" value="{{ $project->id }}">
+                    <div class="form-group">
+                        <label for="nama_project">Nama project</label>
+                        <input type="text" class="form-control @error('nama_project') is-invalid @enderror" name="nama_project" placeholder="Nama project" value="{{ $project->nama_project }}" required>
+                        @error('nama_project')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hapus project</h5>
+                </div>
+                <div class="modal-body">
+                    Apakah anda yakin akan menghapus project ini?
+                </div>
+                
+                <div class="modal-footer">
+                    <form action="{{ route("guru-project-hapus" , [$project->kelas->kode_kelas, $project->id]) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="project" value="{{ $project->id }}">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="createFaseModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -220,6 +284,10 @@
 
 @section('scripts')
     <script>
+        @error('nama_project')
+            $("#editProjectModal").modal('show');
+        @enderror
+
         var anggotaChanged = false;
 
         $(".edit-kelompok").on('click', function() {
