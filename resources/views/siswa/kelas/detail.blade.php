@@ -36,7 +36,7 @@
                         @slot('project', $project)
                     @endcomponent
                 @empty
-                    <div class="col-12">
+                    <div class="col-12 mb-2">
                         Belum ada project saat ini.
                     </div>
                 @endforelse

@@ -29,8 +29,8 @@
                         @slot('kelompok', $kelompok)
                     @endcomponent
                 @empty
-                <div class="col-12">
-                    Belum ada kelompok yang dibuat 
+                <div class="col-12 mb-2">
+                    Belum ada kelompok yang dibuat
                 </div>
                 @endforelse
 
@@ -69,7 +69,7 @@
                         @slot('fase', $fase)
                     @endcomponent
                 @empty
-                <div class="col-12">
+                <div class="col-12 mb-2">
                     Belum ada fase yang dibuat 
                 </div>
                 @endforelse

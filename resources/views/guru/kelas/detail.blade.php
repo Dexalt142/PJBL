@@ -5,7 +5,7 @@
 @endsection
 
 @section('page-header')
-    {{ $kelas->nama }}
+    {{ $kelas->nama }} - {{ $kelas->kode_kelas }}
     <div class="dropdown d-inline-block">
         <button class="btn btn-link dropdown-toggle" type="button" id="kelasMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Pengaturan
@@ -14,7 +14,7 @@
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editKelasModal">Edit</a>
             <a class="dropdown-item" href="#" id="generateKodeKelas">Generate Kode</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Hapus</a>
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteKelasModal">Hapus</a>
         </div>
     </div>
 @endsection
@@ -22,7 +22,7 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('guru-dashboard') }}">Dashboard</a></li>
     <li class="breadcrumb-item active">{{ $kelas->nama }}</li>
-    @endsection
+@endsection
 
 @section('content')
     <div class="container-fluid">
@@ -42,7 +42,7 @@
                         @slot('project', $project)
                     @endcomponent
                 @empty
-                    <div class="col-12">
+                    <div class="col-12 mb-2">
                         Belum ada project saat ini.
                     </div>
                 @endforelse
@@ -183,6 +183,28 @@
         </div>
     </div>
 
+    <div class="modal fade" id="deleteKelasModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hapus kelas</h5>
+                </div>
+                <div class="modal-body">
+                    Apakah anda yakin akan menghapus kelas ini?
+                </div>
+                
+                <div class="modal-footer">
+                    <form action="{{ route("guru-kelas-hapus" , $kelas->kode_kelas) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="kode_kelas" value="{{ $kelas->kode_kelas }}">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 
@@ -204,6 +226,7 @@
     @enderror
 
     <script>
+
         $("#generateKodeKelas").on('click', function() {
             $.ajax({
                 url: '{{ route("guru-kelas-gencode", $kelas->kode_kelas) }}',
