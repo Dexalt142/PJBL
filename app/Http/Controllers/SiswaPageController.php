@@ -25,13 +25,17 @@ class SiswaPageController extends Controller {
         return view('siswa.kelas.detail', compact('kelas'));
     }    
     
-    public function viewProject($kode_kelas, $project_id) {
-        $kelas = Kelas::where('kode_kelas', $kode_kelas)->first();
-        if($kelas->siswa->contains(auth()->user()->detail)) {
+    public function viewProject($kelas, $project_id) {
+        $kelas = Kelas::where('kode_kelas', $kelas)->first();
+
+        if($kelas && $kelas->siswa->contains(auth()->user()->detail)) {
             $project = $kelas->project->where('id', $project_id)->first();
+
             if($project) {
-                $kel = DB::table('kelompok_anggota')->where('siswa_id', auth()->user()->detail->id)->get();
+                $idKelasSiswa = $kelas->siswa->where('id', auth()->user()->detail->id)->first()->pivot->id;
+                $kel = DB::table('kelompok_anggota')->where('siswa_id', $idKelasSiswa)->get();
                 $kelompok = null;
+
                 foreach ($kel as $k) {
                     $ktemp = Kelompok::find($k->kelompok_id);
                     if($ktemp->project_id == $project_id) {
@@ -40,31 +44,43 @@ class SiswaPageController extends Controller {
                 }
 
                 return view('siswa.project.detail', compact('project', 'kelompok'));
-            } else {
-                abort(404);
             }
-        } else {
-            abort(404);
         }
+
+        abort(404);
     }
 
     public function viewFase($kelas, $project, $fase) {
-        $kelompok = Kelompok::where('project_id', $project)->get();
-        foreach($kelompok as $k) {
-            if($k->anggota()->contains(auth()->user()->detail)) {
-               $kelompok = $k; 
+        $kelas = Kelas::where('kode_kelas', $kelas)->first();
+
+        if($kelas && $kelas->siswa->contains(auth()->user()->detail)) {
+            $pr = $kelas->project->where('id', $project)->first();
+            if(!$pr) {
+                abort(404);
+            }
+            $allKelompok = Kelompok::where('project_id', $pr->id)->get();
+            $kelompok = null;
+            
+            foreach($allKelompok as $k) {
+                if($k->anggota()->contains(auth()->user()->detail)) {
+                    $kelompok = $k; 
+                }
+            }
+
+            if($kelompok) {
+                $fase = $pr->fase->where('id', $fase)->first();
+                if($fase) {
+                    $status = $fase->getStatus($kelompok->id);
+                    
+                    if($status == 1 || $status == 2) {
+                        $faseKelompok = FaseKelompok::where(['fase_id' => $fase->id, 'kelompok_id' => $kelompok->id])->first();
+                        return view('siswa.fase.detail', compact('fase', 'kelompok','faseKelompok'));
+                    }
+                }
             }
         }
-
-        $fase = Fase::where(['id' => $fase])->firstOrFail();
-        $status = $fase->getStatus($kelompok->id);
         
-        if($status == 1 || $status == 2) {
-            $faseKelompok = FaseKelompok::where(['fase_id' => $fase->id, 'kelompok_id' => $kelompok->id])->first();
-            return view('siswa.fase.detail', compact('fase', 'kelompok','faseKelompok'));
-        } else {
-            abort(404);
-        }
+        abort(404);
     }
     
     public function showDashboard() {
