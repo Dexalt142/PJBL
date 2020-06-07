@@ -6,7 +6,7 @@ Aplikasi web pembelajaran berbasis proyek
 #### 1. Clone or download
 Clone or download all files from this repository into a directory, then run these commands.
 ```
-composer install
+composer inst
 composer dumpautoload -o
 ```
 
@@ -28,5 +28,5 @@ php artisan migrate
 #### 4. Installation completed
 You can run this application by running this command
 ```
-php artisan server
+php artisan serve
 ```
