@@ -41,29 +41,40 @@ class ProjectController extends Controller {
     }
 
     public function viewProject($kelas, $project) {
-        $project = Project::where('id', $project)->firstOrFail();
-        if($project->kelas->guru != auth()->user()->detail) {
-            abort(404);
-        }
-
-        $noGroup = $project->kelas->siswa;
-        foreach ($project->kelompok as $kelompok) {
-            foreach ($kelompok->anggota() as $anggota) {
-                if($noGroup->contains($anggota)) {
-                    $noGroup = $noGroup->keyBy('id');
-                    $noGroup->forget($anggota->id);
+        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        
+        if($kelas) {
+            $project = $kelas->project->where('id', $project)->first();
+            if($project) {
+                $noGroup = $project->kelas->siswa;
+                foreach ($project->kelompok as $kelompok) {
+                    foreach ($kelompok->anggota() as $anggota) {
+                        if($noGroup->contains($anggota)) {
+                            $noGroup = $noGroup->keyBy('id');
+                            $noGroup->forget($anggota->id);
+                        }
+                    }
                 }
+                return view('guru.project.detail', compact('project', 'noGroup'));
             }
         }
-        return view('guru.project.detail', compact('project', 'noGroup'));
+
+        abort(404);
     }
 
     public function viewFase($kelas, $project, $fase) {
-        $fase = Fase::where('id', $fase)->firstOrFail();
-        if($fase->project->kelas->guru != auth()->user()->detail) {
-            abort(404);
+        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        if($kelas) {
+            $project = $kelas->project->where('id', $project)->first();
+            if($project) {
+                $fase = $project->fase->where('id', $fase)->first();
+                if($fase) {
+                    return view('guru.fase.detail', compact('fase'));
+                }
+            }
         }
-        return view('guru.fase.detail', compact('fase'));
+        
+        abort(404);
     }
 
     public function buatFase($kelas, $project, Request $request) {
