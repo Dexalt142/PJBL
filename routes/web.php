@@ -53,14 +53,14 @@ Route::middleware('guru', 'user-validated')->group(function() {
                 Route::post('gencode', 'KelasController@generateNewCode')->name('guru-kelas-gencode');
     
     
-                Route::get('{project}', 'ProjectController@viewProject')->name('guru-project-detail');
+                Route::get('{project}', 'GuruPageController@viewProject')->name('guru-project-detail');
                 
                 Route::post('{project}/fase/buat', 'ProjectController@buatFase')->name('guru-fase-create');
                 Route::post('project/buat', 'ProjectController@buatProject')->name('guru-project-create');
                 Route::post('{project}/genkel', 'ProjectController@generateKelompok')->name('guru-kelompok-generate');
     
                 Route::prefix('{project}')->group(function() {
-                    Route::get('{fase}', 'ProjectController@viewFase')->name('guru-fase-detail');
+                    Route::get('{fase}', 'GuruPageController@viewFase')->name('guru-fase-detail');
                     Route::post('{fase}/edit', 'ProjectController@editFase')->name('guru-fase-edit');
                     Route::post('{fase}/nilai', 'ProjectController@nilaiFase')->name('guru-fase-nilai');
                     Route::post('tambah-anggota', 'ProjectController@tambahAnggota')->name('guru-anggota-tambah');

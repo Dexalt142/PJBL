@@ -40,43 +40,6 @@ class ProjectController extends Controller {
         return view('guru.project.project', compact('projects'));
     }
 
-    public function viewProject($kelas, $project) {
-        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
-        
-        if($kelas) {
-            $project = $kelas->project->where('id', $project)->first();
-            if($project) {
-                $noGroup = $project->kelas->siswa;
-                foreach ($project->kelompok as $kelompok) {
-                    foreach ($kelompok->anggota() as $anggota) {
-                        if($noGroup->contains($anggota)) {
-                            $noGroup = $noGroup->keyBy('id');
-                            $noGroup->forget($anggota->id);
-                        }
-                    }
-                }
-                return view('guru.project.detail', compact('project', 'noGroup'));
-            }
-        }
-
-        abort(404);
-    }
-
-    public function viewFase($kelas, $project, $fase) {
-        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
-        if($kelas) {
-            $project = $kelas->project->where('id', $project)->first();
-            if($project) {
-                $fase = $project->fase->where('id', $fase)->first();
-                if($fase) {
-                    return view('guru.fase.detail', compact('fase'));
-                }
-            }
-        }
-        
-        abort(404);
-    }
-
     public function buatFase($kelas, $project, Request $request) {
         $validated = $request->validate([
             'nama_fase' => ['required', 'string'],
