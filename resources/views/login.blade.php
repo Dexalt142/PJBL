@@ -11,7 +11,7 @@ PJBL &middot; Login
                 <div class="text-center">
                     <img src="{{ asset('assets/img/illustration_1.png') }}" alt="Illustration 1" class="w-75">
                     <h1 class="f-w-700">Project Based Learning</h1>
-                    <h6>Aplikasi pembelajaran project based learning berbasis web nomor 1 di UPI.</h6>
+                    <h6>Aplikasi pembelajaran project based learning berbasis web nomor.</h6>
                 </div>
             </div>
 

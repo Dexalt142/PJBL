@@ -8,7 +8,11 @@ PJBL &middot; Register
     <div class="container">
         <div class="row mt-5">
             <div class="col-md-7">
-
+                <div class="text-center">
+                    <img src="{{ asset('assets/img/illustration_1.png') }}" alt="Illustration 1" class="w-75">
+                    <h1 class="f-w-700">Project Based Learning</h1>
+                    <h6>Aplikasi pembelajaran project based learning berbasis web nomor.</h6>
+                </div>
             </div>
 
             <div class="col-md-5">
@@ -18,7 +22,7 @@ PJBL &middot; Register
                             Project Based Learning
                         </h3>
                         <div class="text-center">
-                            Selamat datang di Project Based Learning, bergabunglah di platform project based learning nomor 1 di UPI!
+                            Selamat datang di Project Based Learning.
                         </div>
 
                         <div class="mt-4">
