@@ -67,6 +67,7 @@ Route::middleware('guru', 'user-validated')->group(function() {
                     Route::get('{fase}', 'GuruPageController@viewFase')->name('guru-fase-detail');
                     Route::post('{fase}/edit', 'ProjectController@editFase')->name('guru-fase-edit');
                     Route::post('{fase}/nilai', 'ProjectController@nilaiFase')->name('guru-fase-nilai');
+                    Route::post('{fase}/hapus', 'ProjectController@hapusFase')->name('guru-fase-hapus');
                     Route::post('tambah-anggota', 'ProjectController@tambahAnggota')->name('guru-anggota-tambah');
                     Route::post('hapus-anggota', 'ProjectController@hapusAnggota')->name('guru-anggota-hapus');
                 });

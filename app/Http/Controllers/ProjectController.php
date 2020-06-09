@@ -111,6 +111,37 @@ class ProjectController extends Controller {
         }
     }
 
+    public function hapusFase($kelas, $project, $fase, Request $request) {
+        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        if($kelas) {
+            $project = $kelas->project->where('id', $project)->first();
+            if($project) {
+                $pfase = $project->fase;
+                $fase = $pfase->where('id', $fase)->first();
+                if($pfase->isNotEmpty() && $fase) {
+                    if($fase->fase_ke == $pfase->count()) {
+                        $fase->delete();
+
+                    } else {
+                        $fase_ke = $fase->fase_ke;
+                        $nextFase = $pfase->where('fase_ke', '>', $fase_ke);
+                        
+                        if($fase->delete()) {
+                            foreach($nextFase as $nf) {
+                                $nf->fase_ke = $nf->fase_ke - 1;
+                                $nf->save();
+                            }
+                        }
+                    }
+
+                    return redirect()->route('guru-project-detail', [$kelas->kode_kelas, $project->id]);
+                }
+            }
+        }
+
+        return redirect()->back();
+    }
+
     public function answerFase(Request $request) {
         $validated = $request->validate([
             'fase_id' => ['integer', 'exists:fase,id'],

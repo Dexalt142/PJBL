@@ -60,6 +60,7 @@
                                 <div class="form-group" id="actionGroup" style="display: none">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
                                     <button type="button" class="btn btn-link" id="cancelButton">Batal</button>
+                                    <button type="button" class="btn btn-danger ml-auto" data-toggle="modal" data-target="#deleteFaseModal">Hapus</button>
                                 </div>
                             </form>
                         </div>
@@ -162,6 +163,26 @@
 
     </div>
 
+    <div class="modal fade" id="deleteFaseModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Hapus fase</h5>
+            </div>
+            <div class="modal-body">
+                Apakah anda yakin akan menghapus fase {{ $fase->nama_fase }}?
+            </div>
+            <div class="modal-footer">
+                <form action="{{ route('guru-fase-hapus', [$fase->project->kelas->kode_kelas, $fase->project->id, $fase->id]) }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="fase" value="{{ $fase->id }}">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="detailFaseModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -246,7 +267,7 @@
             $("select[name='fase_type']").prop('disabled', false);
             $("input[name='deadline']").prop('disabled', false);
             $("textarea[name='materi']").prop('disabled', false);
-            $("#actionGroup").css('display', 'block');
+            $("#actionGroup").css('display', 'flex');
         });
 
         $("#cancelButton").on('click', function() {
