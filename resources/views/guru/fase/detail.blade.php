@@ -86,7 +86,7 @@
                                             <div>
                                                 {{ $loop->iteration.". " }}
                                                 <a href="{{ url(config('app.materi').$fase->project->kelas->kode_kelas.'/'.$fileMateri->nama_file) }}" download>{{ $fileMateri->nama_file }}</a>
-                                                <span class="badge badge-sm btn-danger hapusFileMateriButton" style="cursor: pointer; user-select: none; display: none;">Hapus</span>
+                                                <span class="badge badge-sm btn-danger hapusFileMateriButton" style="cursor: pointer; user-select: none; display: none;" data-idf="{{ $fileMateri->id }}">Hapus</span>
                                             </div>
                                         @endforeach
                                     </div>
@@ -311,6 +311,28 @@
                     }
                 }
             });
+        });
+
+        $(".hapusFileMateriButton").on('click', function() {
+            if(confirm("Apakah anda yakin akan menghapus file ini?")) {
+                var btn = $(this);
+                
+                $.ajax({
+                    url: "{{ route('guru-fase-hapusmateri', [$fase->project->kelas->kode_kelas, $fase->project->id, $fase->id]) }}",
+                    method: "POST",
+                    data: {
+                        '_token': "{{ csrf_token() }}",
+                        'idf': btn.data('idf')
+                    },
+                    success: function(response) {
+                        if(response.success) {
+                            btn.closest('div').fadeOut('normal', function() {
+                                $(this).remove();
+                            });
+                        }
+                    }
+                });
+            }
         });
 
         $("#tambahFileButton").on('click', function() {

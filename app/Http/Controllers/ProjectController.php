@@ -193,6 +193,30 @@ class ProjectController extends Controller {
         return redirect()->back();
     }
 
+    public function hapusFileMateri($kelas, $project, $fase, Request $request) {
+        $res = ['success' => false];
+        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+
+        if($kelas) {
+            $project = $kelas->project->where('id', $project)->first();
+            if($project) {
+                $fase = $project->fase->where('id', $fase)->first();
+                if($fase) {
+                    $fileToBeDeleted = $fase->fileMateri->where('id', $request->idf)->first();
+                    if($fileToBeDeleted) {
+                        Storage::disk('materi')->delete($kelas->kode_kelas.'/'.$fileToBeDeleted->nama_file);
+                        $fileToBeDeleted->delete();
+                        $res['success'] = true;
+
+                        return response()->json($res);
+                    }
+                }
+            }
+        }
+
+        return response()->json($res);
+    }
+
     public function answerFase(Request $request) {
         $validated = $request->validate([
             'fase_id' => ['integer', 'exists:fase,id'],
