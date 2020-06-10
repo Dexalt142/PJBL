@@ -123,12 +123,6 @@ class ProjectController extends Controller {
 
     }
 
-    public static function slugger($string,$replace){
-        $char = ['\\','/',':',';','?','*','&','<','>','#','$',' ','|','+','\'','\"'];
-        $normalize = str_replace($char,$replace,$string);
-        return strtoupper($normalize);
-    }
-
     public function editFase($kelas, $project, $fase, Request $request) {
         $validated = $request->validate([
             'id' => ['required', 'integer'],
@@ -136,16 +130,36 @@ class ProjectController extends Controller {
             'materi' => ['required', 'string'],
             'fase_type' => ['required', 'string', 'regex:(materi|tes)'],
             'deadline' => ['required', 'date'],
+            'fileMateri.*' => ['nullable', 'sometimes', 'mimes:docx,doc,pptx,ppt,pdf,rar,zip'],
         ]);
 
-        $fase = Fase::where('id', $validated['id'])->first();
-        $fase->nama_fase = $validated['nama_fase'];
-        $fase->materi = $validated['materi'];
-        $fase->fase_type = $validated['fase_type'];
-        $fase->deadline = $validated['deadline'];
-        if($fase->save()) {
-            return redirect()->back();
+        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        if($kelas) {
+            $project = $kelas->project->where('id', $project)->first();
+            if($project) {
+                $fase = $project->fase->where('id', $validated['id'])->first();
+                if($fase) {
+                    $fase->nama_fase = $validated['nama_fase'];
+                    $fase->materi = $validated['materi'];
+                    $fase->fase_type = $validated['fase_type'];
+                    $fase->deadline = $validated['deadline'];
+    
+                    if($fase->save()) {
+                        if($request->file('fileMateri')) {
+                            foreach($request->file('fileMateri') as $file) {
+                                $filename = Str::random(10).'_'.ProjectController::sanitize($file->getClientOriginalName());
+                                $path = Storage::disk('materi')->putFileAs($kelas->kode_kelas, $file, $filename);
+                                $fileMateri = FileMateri::create(['nama_file' => $filename, 'fase_id' => $fase->id]);
+                            }
+                        }
+
+                        return redirect()->back()->with('faseSuccess', 'Berhasil mengedit fase');
+                    }
+                }
+            }
         }
+        
+        return redirect()->back()->withErrors(['faseFail' => 'Gagal mengedit fase']);
     }
 
     public function hapusFase($kelas, $project, $fase, Request $request) {

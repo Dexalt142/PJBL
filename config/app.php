@@ -56,6 +56,8 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
     
+    'materi' => 'materi/',
+
     'answer_files' => 'answer_files/',
 
     /*

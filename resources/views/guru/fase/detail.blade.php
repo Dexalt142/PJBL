@@ -23,16 +23,37 @@
             </div>
 
             <div class="row">
+                @if (Session::has('faseSuccess'))    
+                    <div class="col-12">
+                        <div class="alert alert-success">{{ Session::get('faseSuccess') }}</div>
+                    </div>
+                @endif
+
+                @error ('faseFail')    
+                    <div class="col-12">
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    </div>
+                @enderror
+
+                @error ('fileMateri.*')    
+                    <div class="col-12">
+                        <div class="alert alert-danger">File yang dapat diupload hanya docx, doc, pptx, pdf, rar, zip.</div>
+                    </div>
+                @enderror
+            </div>
+
+            <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('guru-fase-edit', [$fase->project->kelas->kode_kelas, $fase->project->id, $fase->id]) }}" method="POST">
+                            <form action="{{ route('guru-fase-edit', [$fase->project->kelas->kode_kelas, $fase->project->id, $fase->id]) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $fase->id }}">
                                 <div class="form-group">
                                     <label for="nama_fase">Nama fase</label>
                                     <input type="text" class="form-control" name="nama_fase" value="{{ $fase->nama_fase }}" disabled>
                                 </div>      
+
 
                                 <div class="row">
                                     <div class="col-md-6">
@@ -56,6 +77,36 @@
                                     <label for="materi">Materi</label>
                                     <textarea name="materi" class="form-control" row="2" disabled>{{ $fase->materi }}</textarea>
                                 </div>
+                                
+                                @if ($fase->fileMateri->isNotEmpty())
+                                    <hr>
+                                    <div class="form-group">
+                                        <label for="">File Materi</label>
+                                        @foreach ($fase->fileMateri as $fileMateri)
+                                            <div>
+                                                {{ $loop->iteration.". " }}
+                                                <a href="{{ url(config('app.materi').$fase->project->kelas->kode_kelas.'/'.$fileMateri->nama_file) }}" download>{{ $fileMateri->nama_file }}</a>
+                                                <span class="badge badge-sm btn-danger hapusFileMateriButton" style="cursor: pointer; user-select: none; display: none;">Hapus</span>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endif
+
+                                <div id="uploadFileMateri" style="display: none">
+                                    <hr>
+                                    <div class="form-group mb-0">
+                                        <label for="">Upload file materi</label>
+                                    </div>
+
+                                    <div class="form-group" id="fileMateri">
+                                        <input type="file" name="fileMateri[]" class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-sm btn-info" id="tambahFileButton">Tambah file</button>
+                                    </div>
+                                </div>
+
 
                                 <div class="form-group" id="actionGroup" style="display: none">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -262,12 +313,19 @@
             });
         });
 
+        $("#tambahFileButton").on('click', function() {
+            var inputFile = $("#fileMateri");
+            inputFile.clone().insertAfter($("#fileMateri"));
+        });
+
         $("#editFaseButton").on('click', function() {
             $("input[name='nama_fase']").prop('disabled', false).focus();
             $("select[name='fase_type']").prop('disabled', false);
             $("input[name='deadline']").prop('disabled', false);
             $("textarea[name='materi']").prop('disabled', false);
             $("#actionGroup").css('display', 'flex');
+            $(".hapusFileMateriButton").css('display', '');
+            $("#uploadFileMateri").css('display', 'block');
         });
 
         $("#cancelButton").on('click', function() {
@@ -276,6 +334,8 @@
             $("input[name='deadline']").prop('disabled', true);
             $("textarea[name='materi']").prop('disabled', true);
             $("#actionGroup").css('display', 'none');
+            $(".hapusFileMateriButton").css('display', 'none');
+            $("#uploadFileMateri").css('display', 'none');
         });
     </script>
 @endsection
