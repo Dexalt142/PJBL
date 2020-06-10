@@ -217,19 +217,20 @@
     <div class="modal fade" id="deleteFaseModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Hapus fase</h5>
-            </div>
-            <div class="modal-body">
-                Apakah anda yakin akan menghapus fase {{ $fase->nama_fase }}?
-            </div>
-            <div class="modal-footer">
-                <form action="{{ route('guru-fase-hapus', [$fase->project->kelas->kode_kelas, $fase->project->id, $fase->id]) }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="fase" value="{{ $fase->id }}">
-                    <button type="button" class="btn btn-link" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-danger">Hapus</button>
-                </form>
+                <div class="modal-header">
+                    <h5 class="modal-title">Hapus fase</h5>
+                </div>
+                <div class="modal-body">
+                    Apakah anda yakin akan menghapus fase {{ $fase->nama_fase }}?
+                </div>
+                <div class="modal-footer">
+                    <form action="{{ route('guru-fase-hapus', [$fase->project->kelas->kode_kelas, $fase->project->id, $fase->id]) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="fase" value="{{ $fase->id }}">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -237,42 +238,43 @@
     <div class="modal fade" id="detailFaseModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"></h5>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="jawaban">Jawaban</label>
-                    <textarea name="jawaban" class="form-control" disabled></textarea>
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
                 </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="jawaban">Jawaban</label>
+                        <textarea name="jawaban" class="form-control" disabled></textarea>
+                    </div>
 
-                <div class="form-group">
-                    <label for="jawaban_file">File Jawaban</label><br>
-                    <a class="btn btn-link" name="jawaban_file"></a>
+                    <div class="form-group">
+                        <label for="jawaban_file">File Jawaban</label><br>
+                        <a class="btn btn-link" name="jawaban_file"></a>
+                    </div>
+
+                    <hr>
+                    <form action="{{ route('guru-fase-nilai', [$fase->project->kelas->kode_kelas, $fase->project->id, $fase->id]) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="fk_id">
+                        <div class="form-group">
+                            <label for="jawaban">Nilai</label>
+                            <input type="number" min="0" max="100" class="form-control" name="nilai">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="evaluasi">Evaluasi</label>
+                            <textarea name="evaluasi" class="form-control"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-secondary">Simpan nilai</button>
+                        </div>
+                    </form>
+
                 </div>
-
-                <hr>
-                <form action="{{ route('guru-fase-nilai', [$fase->project->kelas->kode_kelas, $fase->project->id, $fase->id]) }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="fk_id">
-                    <div class="form-group">
-                        <label for="jawaban">Nilai</label>
-                        <input type="number" min="0" max="100" class="form-control" name="nilai">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="evaluasi">Evaluasi</label>
-                        <textarea name="evaluasi" class="form-control"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <button class="btn btn-secondary">Simpan nilai</button>
-                    </div>
-                </form>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+                </div>
             </div>
         </div>
     </div>
