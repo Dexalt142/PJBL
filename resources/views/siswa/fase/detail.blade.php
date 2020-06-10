@@ -23,7 +23,25 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            {{ $fase->materi }}
+                            <div class="form-group">
+                                <label for="">Materi</label>
+                                <p>
+                                    {{ $fase->materi }}
+                                </p>
+                            </div>
+                            
+                            @if ($fase->fileMateri->isNotEmpty())
+                                <div class="form-group">
+                                    <label for="">File Materi</label>
+                                    @foreach ($fase->fileMateri as $fileMateri)
+                                        <div>
+                                            {{ $loop->iteration.". " }}
+                                            <a href="{{ url(config('app.materi').$fase->project->kelas->kode_kelas.'/'.$fileMateri->nama_file) }}" download>{{ $fileMateri->nama_file }}</a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
                             <hr>
                             @php
                                 $notdeadline = false;
