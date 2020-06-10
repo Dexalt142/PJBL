@@ -177,6 +177,13 @@ class ProjectController extends Controller {
                         $fase_ke = $fase->fase_ke;
                         $nextFase = $pfase->where('fase_ke', '>', $fase_ke);
                         
+                        if($fase->fileMateri->isNotEmpty()) {
+                            foreach($fase->fileMateri as $fileMateri) {
+                                Storage::disk('materi')->delete($kelas->kode_kelas.'/'.$fileMateri->nama_file);
+                                $fileMateri->delete();
+                            }
+                        }
+
                         if($fase->delete()) {
                             foreach($nextFase as $nf) {
                                 $nf->fase_ke = $nf->fase_ke - 1;
