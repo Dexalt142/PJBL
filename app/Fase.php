@@ -23,6 +23,10 @@ class Fase extends Model {
         return $this->belongsToMany('App\Kelompok')->withPivot('jawaban', 'jawaban_file', 'nilai', 'status');
     }
 
+    public function fileMateri() {
+        return $this->hasMany('App\FileMateri');
+    }
+
     public function faseDetail($kelompok) {
         return FaseKelompok::where(['fase_id' => $this->id, 'kelompok_id' => $kelompok])->first();
     }

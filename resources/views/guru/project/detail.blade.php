@@ -77,6 +77,18 @@
             </div>
 
             <div class="row">
+                @if (Session::has('faseSuccess'))    
+                    <div class="col-12">
+                        <div class="alert alert-success">{{ Session::get('faseSuccess') }}</div>
+                    </div>
+                @endif
+
+                @error ('faseFail')    
+                    <div class="col-12">
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    </div>
+                @enderror
+
                 @forelse ($project->fase->sortBy('fase_ke') as $fase)
                     @component('component.guru.card-fase')
                         @slot('fase', $fase)
@@ -225,7 +237,7 @@
                     <h5 class="modal-title">Buat fase baru</h5>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('guru-fase-create', [$project->kelas->kode_kelas, $project->id]) }}" method="POST">
+                    <form action="{{ route('guru-fase-create', [$project->kelas->kode_kelas, $project->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="r" value="{{ route('guru-project-detail', [$project->kelas->kode_kelas, $project->id]) }}">
                         <div class="form-group">
@@ -270,6 +282,23 @@
                                 </span>
                             @enderror
                         </div>
+
+                        <hr>
+
+                        <div class="form-group mb-0">
+                            <label for="">File materi</label>
+                        </div>
+
+                        <div class="form-group" id="file-materi">
+                            <input type="file" class="form-control @error('fileMateri.*') is-invalid @enderror" name="fileMateri[]">
+                            @error('fileMateri.*')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>File yang dapat diupload hanya docx, doc, pptx, pdf, rar, zip.</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        
+                        <button type="button" class="btn btn-sm btn-info" id="tambahFileButton">Tambah file</button>
                     </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link" data-dismiss="modal">Tutup</button>
@@ -280,15 +309,25 @@
         </div>
     </div>
 
+    
 @endsection
 
 @section('scripts')
     <script>
+        @if($errors->has('fileMateri.*') || $errors->has('nama_fase') || $errors->has('materi') || $errors->has('fase_type') || $errors->has('deadline'))
+            $("#createFaseModal").modal('show');
+        @endif
+
         @error('nama_project')
             $("#editProjectModal").modal('show');
         @enderror
 
         var anggotaChanged = false;
+
+        $("#tambahFileButton").on('click', function() {
+            var inputFile = $("#file-materi");
+            inputFile.clone().insertAfter($("#file-materi"));
+        });
 
         $(".edit-kelompok").on('click', function() {
             var btn = $(this);

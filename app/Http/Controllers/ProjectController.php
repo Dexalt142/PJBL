@@ -6,6 +6,7 @@ use App\Project;
 use App\Kelompok;
 use App\FaseKelompok;
 use App\Fase;
+use App\FileMateri;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,12 @@ class ProjectController extends Controller {
     public function __construct() {
         $this->middleware('guru', ['only' => ['buatProject', 'buatFase', 'showProjectPage', 'viewProject']]);
         $this->middleware('siswa', ['only' => ['answerFase']]);
+    }
+
+    public static function sanitize($string){
+        $rep = ['\\', '/', ':', ';', '?', '*', '&', '<', '>', '#', '$', ' ', '|', '+', '\'', '\"'];
+        $sanitized = str_replace($rep, '-', $string);
+        return $sanitized;
     }
 
     public function buatProject(Request $request) {
@@ -71,25 +78,55 @@ class ProjectController extends Controller {
     }
 
     public function buatFase($kelas, $project, Request $request) {
+        
         $validated = $request->validate([
             'nama_fase' => ['required', 'string'],
             'materi' => ['required', 'string'],
             'fase_type' => ['required', 'string', 'regex:(materi|tes)'],
             'deadline' => ['required', 'date'],
+            'fileMateri.*' => ['nullable', 'sometimes', 'mimes:docx,doc,pptx,ppt,pdf,rar,zip'],
         ]);
 
-        $a = Fase::where(['project_id' => $project])->orderBy('fase_ke', 'DESC')->first();
-        $validated['project_id'] = $project;
-        $validated['fase_ke'] = 1;
+        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        if($kelas) {
+            $project = $kelas->project->where('id', $project)->first();
+            if($project) {
+                $a = Fase::where(['project_id' => $project->id])->orderBy('fase_ke', 'DESC')->first();
+                $newFase = new Fase;        
+                if($a) {
+                    $newFase->fase_ke = $a->fase_ke + 1;
+                } else {
+                    $newFase->fase_ke = 1;
+                }
 
-        if($a) {
-            $validated['fase_ke'] = $a->fase_ke + 1;
-        } 
-        
-        $fase = Fase::create($validated);
-        if($fase) {
-            return redirect()->back();
+                $newFase->project_id = $project->id;
+                $newFase->nama_fase = $validated['nama_fase'];
+                $newFase->materi = $validated['materi'];
+                $newFase->fase_type = $validated['fase_type'];
+                $newFase->deadline = $validated['deadline'];
+                
+                if($newFase->save()) {
+                    if($request->file('fileMateri')) {
+                        foreach($request->file('fileMateri') as $file) {
+                            $filename = Str::random(10).'_'.ProjectController::sanitize($file->getClientOriginalName());
+                            $path = Storage::disk('materi')->putFileAs($kelas->kode_kelas, $file, $filename);
+                            $fileMateri = FileMateri::create(['nama_file' => $filename, 'fase_id' => $newFase->id]);
+                        }
+                    }
+
+                    return redirect()->back()->with('faseSuccess', 'Berhasil membuat fase baru');
+                }
+            }
         }
+
+        return redirect()->back()->withErrors(['faseFail' => 'Gagal membuat fase']);
+
+    }
+
+    public static function slugger($string,$replace){
+        $char = ['\\','/',':',';','?','*','&','<','>','#','$',' ','|','+','\'','\"'];
+        $normalize = str_replace($char,$replace,$string);
+        return strtoupper($normalize);
     }
 
     public function editFase($kelas, $project, $fase, Request $request) {
@@ -155,7 +192,7 @@ class ProjectController extends Controller {
         $fk = FaseKelompok::where(['fase_id' => $validated['fase_id'], 'kelompok_id' => $validated['kelompok_id']])->first();
         if($fk) {
             if($request->file('jawaban_file')) { 
-                $filename = Str::random(10).'_'.$request->file('jawaban_file')->getClientOriginalName();
+                $filename = Str::random(10).'_'.ProjectController::sanitize($request->file('jawaban_file')->getClientOriginalName());
                 $path = Storage::disk('answer_files')->putFileAs('', $request->file('jawaban_file'), $filename);
     
                 $fk->jawaban_file = $filename;
@@ -164,7 +201,7 @@ class ProjectController extends Controller {
             $fk->save();
         } else {
             if($request->file('jawaban_file')) {
-                $filename = Str::random(10).'_'.$request->file('jawaban_file')->getClientOriginalName();
+                $filename = Str::random(10).'_'.ProjectController::sanitize($request->file('jawaban_file')->getClientOriginalName());
                 $path = Storage::disk('answer_files')->putFileAs('', $request->file('jawaban_file'), $filename);
     
                 $validated['jawaban_file'] = $filename;

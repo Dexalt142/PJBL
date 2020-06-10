@@ -60,6 +60,11 @@ return [
             'root'   => public_path() . '/answer_files',
         ],
 
+        'materi' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/materi',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
