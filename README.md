@@ -6,7 +6,7 @@ Aplikasi web pembelajaran berbasis proyek
 #### 1. Clone or download
 Clone or download all files from this repository into a directory, then run these commands.
 ```
-composer inst
+composer install
 composer dumpautoload -o
 ```
 
