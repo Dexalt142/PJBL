@@ -41,8 +41,8 @@ Route::middleware('guru', 'user-validated')->group(function() {
     
     Route::prefix('guru')->group(function() {
         Route::get('project', 'ProjectController@showProjectPage')->name('guru-project');
+        Route::get('kelas', 'KelasController@showKelasPage')->name('guru-kelas');
         Route::prefix('kelas')->group(function() {
-            Route::get('/', 'KelasController@showKelasPage')->name('guru-kelas');
             Route::post('buat', 'KelasController@buatKelas')->name('guru-kelas-create');
             
             Route::prefix('{kelas}')->group(function() {
@@ -90,6 +90,9 @@ Route::middleware('siswa', 'user-validated')->group(function() {
     })->name('siswa-dashboard');
 
     Route::prefix('siswa')->group(function() {
+        Route::get('kelas', 'SiswaPageController@showKelasPage')->name('siswa-kelas');
+        Route::get('project', 'SiswaPageController@showProjectPage')->name('siswa-project');
+
         Route::prefix('kelas')->group(function() {
             Route::get('{kelas}', 'SiswaPageController@viewKelas')->name('siswa-kelas-detail');
             Route::post('gabung', 'KelasController@gabungKelas')->name('siswa-kelas-join');

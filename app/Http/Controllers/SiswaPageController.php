@@ -90,5 +90,18 @@ class SiswaPageController extends Controller {
         }
         return view('guru.dashboard', compact('projects'));
     }
-    
+
+    public function showKelasPage() {
+        $listKelas = auth()->user()->detail->kelas;
+        return view('siswa.kelas.kelas', compact('listKelas'));
+    }
+
+    public function showProjectPage() {
+        $projects = new Collection;
+        foreach(auth()->user()->detail->kelas as $kelas) {
+            $projects = $projects->merge($kelas->project);
+        }
+        $projects = $projects->sortByDesc('created_at');
+        return view('siswa.project.project', compact('projects'));
+    }
 }

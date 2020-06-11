@@ -40,10 +40,10 @@
                         <a href="{{ route('siswa-dashboard') }}"><ion-icon name="home-outline"></ion-icon> Dashboard</a>
                     </li>
                     <li class="sidebar-item">
-                        <a href=""><ion-icon name="cube-outline"></ion-icon> Kelas</a>
+                        <a href="{{ route('siswa-kelas') }}"><ion-icon name="cube-outline"></ion-icon> Kelas</a>
                     </li>
                     <li class="sidebar-item">
-                        {{-- <a href="{{ route('siswa-project') }}"><ion-icon name="albums-outline"></ion-icon> Project</a> --}}
+                        <a href="{{ route('siswa-project') }}"><ion-icon name="albums-outline"></ion-icon> Project</a>
                     </li>
                 </ul>
             </div>
