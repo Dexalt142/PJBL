@@ -21,7 +21,7 @@
             <div class="col-md-3 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h1>3</h1>
+                        <h1>{{ $jumlahSiswa }}</h1>
                         <h5>Jumlah Siswa</h5>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
             <div class="col-md-3 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h1>0</h1>
+                        <h1>{{ $projects->count() }}</h1>
                         <h5>Jumlah Proyek</h5>
                     </div>
                 </div>
