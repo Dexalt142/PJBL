@@ -92,11 +92,10 @@ class ProjectController extends Controller {
             $project = $kelas->project->where('id', $project)->first();
             if($project) {
                 $a = Fase::where(['project_id' => $project->id])->orderBy('fase_ke', 'DESC')->first();
-                $newFase = new Fase;        
+                $newFase = new Fase;    
+                $newFase->fase_ke = 1;    
                 if($a) {
                     $newFase->fase_ke = $a->fase_ke + 1;
-                } else {
-                    $newFase->fase_ke = 1;
                 }
 
                 $newFase->project_id = $project->id;
