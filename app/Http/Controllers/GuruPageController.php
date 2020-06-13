@@ -14,8 +14,8 @@ class GuruPageController extends Controller {
     }
 
     public function viewKelas($kode_kelas) {
-        $kelas = Kelas::where('kode_kelas', $kode_kelas)->firstOrFail();
-        if($kelas->guru != auth()->user()->detail) {
+        $kelas = auth()->user()->detail->where('kode_kelas', $kode_kelas)->first();
+        if(!$kelas) {
             abort(404);
         }
         return view('guru.kelas.detail', compact('kelas'));
