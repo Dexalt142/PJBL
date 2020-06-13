@@ -13,8 +13,12 @@ class GuruPageController extends Controller {
         $this->middleware('guru');
     }
 
+    private function getKelas($kode_kelas) {
+        return auth()->user()->detail->kelas->where('kode_kelas', $kode_kelas)->first();
+    }
+
     public function viewKelas($kode_kelas) {
-        $kelas = auth()->user()->detail->where('kode_kelas', $kode_kelas)->first();
+        $kelas = $this->getKelas($kode_kelas);
         if(!$kelas) {
             abort(404);
         }
@@ -22,7 +26,7 @@ class GuruPageController extends Controller {
     }   
     
     public function viewProject($kelas, $project) {
-        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        $kelas = $this->getKelas($kelas);
         
         if($kelas) {
             $project = $kelas->project->where('id', $project)->first();
@@ -44,7 +48,8 @@ class GuruPageController extends Controller {
     }
 
     public function viewFase($kelas, $project, $fase) {
-        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        $kelas = $this->getKelas($kelas);
+        
         if($kelas) {
             $project = $kelas->project->where('id', $project)->first();
             if($project) {
