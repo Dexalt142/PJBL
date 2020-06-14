@@ -27,6 +27,10 @@ class ProjectController extends Controller {
         return $sanitized;
     }
 
+    private function getKelas($kelas) {
+        return auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+    }
+
     public function buatProject(Request $request) {
         $validated = $request->validate([
             'kelas_id' => ['required', 'integer', 'exists:kelas,id'],
@@ -44,7 +48,7 @@ class ProjectController extends Controller {
             'nama_project' => ['required', 'string', 'min:5'],
         ]);
 
-        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        $kelas = $this->getKelas($kelas);
         if($kelas) {
             $project = $kelas->project->where('id', $request->project)->first();
             if($project) {
@@ -57,7 +61,7 @@ class ProjectController extends Controller {
     }
 
     public function hapusProject(Request $request, $kelas, $project) {
-        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        $kelas = $this->getKelas($kelas);
         if($kelas) {
             $project = $kelas->project->where('id', $request->project)->first();
             if($project) {
@@ -87,7 +91,7 @@ class ProjectController extends Controller {
             'fileMateri.*' => ['nullable', 'sometimes', 'mimes:docx,doc,pptx,ppt,pdf,rar,zip'],
         ]);
 
-        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        $kelas = $this->getKelas($kelas);
         if($kelas) {
             $project = $kelas->project->where('id', $project)->first();
             if($project) {
@@ -132,7 +136,7 @@ class ProjectController extends Controller {
             'fileMateri.*' => ['nullable', 'sometimes', 'mimes:docx,doc,pptx,ppt,pdf,rar,zip'],
         ]);
 
-        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        $kelas = $this->getKelas($kelas);
         if($kelas) {
             $project = $kelas->project->where('id', $project)->first();
             if($project) {
@@ -162,7 +166,7 @@ class ProjectController extends Controller {
     }
 
     public function hapusFase($kelas, $project, $fase, Request $request) {
-        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        $kelas = $this->getKelas($kelas);
         if($kelas) {
             $project = $kelas->project->where('id', $project)->first();
             if($project) {
@@ -201,7 +205,7 @@ class ProjectController extends Controller {
 
     public function hapusFileMateri($kelas, $project, $fase, Request $request) {
         $res = ['success' => false];
-        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        $kelas = $this->getKelas($kelas);
 
         if($kelas) {
             $project = $kelas->project->where('id', $project)->first();
