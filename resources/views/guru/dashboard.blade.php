@@ -13,14 +13,6 @@
             <div class="col-md-3 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h1>{{ auth()->user()->detail->kelas->count() }}</h1>
-                        <h5>Jumlah Kelas</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="card">
-                    <div class="card-body">
                         <h1>{{ $jumlahSiswa }}</h1>
                         <h5>Jumlah Siswa</h5>
                     </div>
@@ -29,14 +21,25 @@
             <div class="col-md-3 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h1>{{ $projects->count() }}</h1>
-                        <h5>Jumlah Proyek</h5>
+                        <h1>{{ auth()->user()->detail->kelas->count() }}</h1>
+                        <h5>Jumlah Kelas</h5>
                     </div>
                 </div>
             </div>
             <div class="col-md-3 mb-4">
                 <div class="card">
-                    <div class="card-body">A</div>
+                    <div class="card-body">
+                        <h1>{{ $projects->count() }}</h1>
+                        <h5>Jumlah Project</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h1>{{ $jumlahFase }}</h1>
+                        <h5>Jumlah Fase</h5>
+                    </div>
                 </div>
             </div>
         </div>

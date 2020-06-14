@@ -66,15 +66,20 @@ class GuruPageController extends Controller {
     public function showDashboard() {
         $projects = new Collection;
         $jumlahSiswa = new Collection;
+        $jumlahFase = new Collection;
         foreach(auth()->user()->detail->kelas as $kelas) {
             $projects = $projects->merge($kelas->project);
             foreach($kelas->siswa as $siswa) {
                 $jumlahSiswa->push($siswa);
             }
+            foreach($kelas->project as $project) {
+                $jumlahFase = $jumlahFase->merge($project->fase);
+            }
         }
 
         $jumlahSiswa = $jumlahSiswa->unique()->count();
-        return view('guru.dashboard', compact('projects', 'jumlahSiswa'));
+        $jumlahFase = $jumlahFase->count();
+        return view('guru.dashboard', compact('projects', 'jumlahSiswa', 'jumlahFase'));
     }
     
 }
