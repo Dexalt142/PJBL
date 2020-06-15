@@ -17,18 +17,22 @@ class SiswaPageController extends Controller {
         $this->middleware('siswa');
     }
 
+    private function getKelas($kelas) {
+        return auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+    }
+
     public function viewKelas($kode_kelas) {
-        $kelas = Kelas::where('kode_kelas', $kode_kelas)->firstOrFail();
-        if(!auth()->user()->detail->kelas->contains($kelas)) {
+        $kelas = $this->getKelas($kode_kelas);
+        if(!$kelas) {
             abort(404);
         }
         return view('siswa.kelas.detail', compact('kelas'));
     }    
     
     public function viewProject($kelas, $project_id) {
-        $kelas = Kelas::where('kode_kelas', $kelas)->first();
+        $kelas = $this->getKelas($kelas);
 
-        if($kelas && $kelas->siswa->contains(auth()->user()->detail)) {
+        if($kelas) {
             $project = $kelas->project->where('id', $project_id)->first();
 
             if($project) {
@@ -51,9 +55,9 @@ class SiswaPageController extends Controller {
     }
 
     public function viewFase($kelas, $project, $fase) {
-        $kelas = Kelas::where('kode_kelas', $kelas)->first();
+        $kelas = $this->getKelas($kelas);
 
-        if($kelas && $kelas->siswa->contains(auth()->user()->detail)) {
+        if($kelas) {
             $pr = $kelas->project->where('id', $project)->first();
             if(!$pr) {
                 abort(404);
