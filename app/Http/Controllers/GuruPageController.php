@@ -81,5 +81,10 @@ class GuruPageController extends Controller {
         $jumlahFase = $jumlahFase->count();
         return view('guru.dashboard', compact('projects', 'jumlahSiswa', 'jumlahFase'));
     }
-    
+
+    public function profilePage() {
+        $user = auth()->user();
+        $userDetail = $user->detail;
+        return view('guru.profile', compact('user', 'userDetail'));
+    }
 }

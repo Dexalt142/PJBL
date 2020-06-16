@@ -40,6 +40,7 @@ Route::middleware('guru', 'user-validated')->group(function() {
     Route::get('guru', 'GuruPageController@showDashboard')->name('guru-dashboard');
     
     Route::prefix('guru')->group(function() {
+        Route::get('profile', 'GuruPageController@profilePage')->name('guru-profile');
         Route::get('project', 'ProjectController@showProjectPage')->name('guru-project');
         Route::get('kelas', 'KelasController@showKelasPage')->name('guru-kelas');
         Route::prefix('kelas')->group(function() {
