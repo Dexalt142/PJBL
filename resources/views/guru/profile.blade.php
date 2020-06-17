@@ -16,11 +16,12 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="">
+                                <form action="{{ route('guru-account') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
                                     <div class="form-group">
                                         <div class="profile-picture">
-                                            <div class="wrapper mx-auto" style="background: url({{ asset('assets/img/profile_picture.png') }}); background-size: cover">
-                                                <div class="hint">Ganti</div>
+                                            <div class="wrapper mx-auto" style="background: url({{ asset('profile_pictures/cG5n.png') }}); background-size: cover">
+                                                <div class="hint">Upload</div>
                                                 <input type="file" name="profile_picture" class="upload-profile-pic">
                                             </div>
                                         </div>
@@ -28,26 +29,46 @@
 
                                     <div class="form-group">
                                         <label for="">Email</label>
-                                        <input type="email" name="email" class="form-control" value="{{ $user->email }}" required>
+                                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ $user->email }}" required>
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                         @enderror
                                     </div>
 
                                     <hr>
 
                                     <div class="form-group">
                                         <label for="">Password Lama</label>
-                                        <input type="password" name="password" class="form-control">
+                                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror">
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                         <small class="form-text text-muted">Kosongkan jika tidak akan diubah.</small>
                                     </div>
                                     
                                     <div class="form-group">
                                         <label for="">Password Baru</label>
-                                        <input type="password" name="new_password" class="form-control">
+                                        <input type="password" name="new_password" class="form-control @error('new_password') is-invalid @enderror">
+                                        @error('new_password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                         <small class="form-text text-muted">Kosongkan jika tidak akan diubah.</small>
                                     </div>
                                     
                                     <div class="form-group">
                                         <label for="">Ulangi Password</label>
-                                        <input type="password" name="repeat_password" class="form-control">
+                                        <input type="password" name="new_password_confirmation" class="form-control @error('new_password') is-invalid @enderror">
+                                        @error('new_password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                         <small class="form-text text-muted">Kosongkan jika tidak akan diubah.</small>
                                     </div>
 

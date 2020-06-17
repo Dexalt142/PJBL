@@ -43,6 +43,8 @@ Route::middleware('guru', 'user-validated')->group(function() {
         Route::get('profile', 'GuruPageController@profilePage')->name('guru-profile');
         Route::get('project', 'ProjectController@showProjectPage')->name('guru-project');
         Route::get('kelas', 'KelasController@showKelasPage')->name('guru-kelas');
+
+        Route::post('profile/akun', 'ProfileController@updateAccount')->name('guru-account');
         Route::prefix('kelas')->group(function() {
             Route::post('buat', 'KelasController@buatKelas')->name('guru-kelas-create');
             
