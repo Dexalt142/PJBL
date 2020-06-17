@@ -20,10 +20,15 @@
                                     @csrf
                                     <div class="form-group">
                                         <div class="profile-picture">
-                                            <div class="wrapper mx-auto" style="background: url({{ asset('profile_pictures/cG5n.png') }}); background-size: cover">
+                                            <div class="wrapper mx-auto" style="background: url({{ ($user->profile_picture) ? asset('profile_pictures/'.$user->profile_picture) : asset('assets/img/profile_picture.png') }}); background-size: cover; background-position: center;">
                                                 <div class="hint">Upload</div>
                                                 <input type="file" name="profile_picture" class="upload-profile-pic">
                                             </div>
+                                            @error('profile_picture')
+                                                <span style="font-size: 80%; color: #dc3545" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
                                     </div>
 

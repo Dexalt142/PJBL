@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller {
     
@@ -17,8 +19,15 @@ class ProfileController extends Controller {
             'new_password' => ['nullable', 'string', 'min:8', 'confirmed']
         ]);
         
-        if(isset($validated['profile_picture'])) {
+        if($request->file('profile_picture')) {
+            $file = $request->file('profile_picture');
+            $filename = Str::orderedUuid()->toString().'.'.$file->extension();
+            $path = Storage::disk('profile_pictures')->putFileAs('', $file, $filename);
 
+            if($user->profile_picture) {
+                Storage::disk('profile_pictures')->delete($user->profile_picture);    
+            }
+            $user->profile_picture = $filename;
         }
 
         if($validated['email'] != $user->email) {
