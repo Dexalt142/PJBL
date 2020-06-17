@@ -45,6 +45,7 @@ Route::middleware('guru', 'user-validated')->group(function() {
         Route::get('kelas', 'KelasController@showKelasPage')->name('guru-kelas');
 
         Route::post('profile/akun', 'ProfileController@updateAccount')->name('guru-account');
+        Route::post('profile/removepropics', 'ProfileController@removeProfilePictures')->name('guru-account-removepropics');
         Route::prefix('kelas')->group(function() {
             Route::post('buat', 'KelasController@buatKelas')->name('guru-kelas-create');
             

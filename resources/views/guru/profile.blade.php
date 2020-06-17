@@ -20,10 +20,15 @@
                                     @csrf
                                     <div class="form-group">
                                         <div class="profile-picture">
-                                            <div class="wrapper mx-auto" style="background: url({{ ($user->profile_picture) ? asset('profile_pictures/'.$user->profile_picture) : asset('assets/img/profile_picture.png') }}); background-size: cover; background-position: center;">
+                                            <div id="profile-pics" class="wrapper mx-auto" style="background: url({{ ($user->profile_picture) ? asset('profile_pictures/'.$user->profile_picture) : asset('assets/img/profile_picture.png') }}) center / cover;">
                                                 <div class="hint">Upload</div>
                                                 <input type="file" name="profile_picture" class="upload-profile-pic">
                                             </div>
+                                            @if($user->profile_picture)
+                                                <div>
+                                                    <button type="button" class="btn btn-link btn-sm" id="remove_profile_picture">Hapus gambar</button>
+                                                </div>
+                                            @endif
                                             @error('profile_picture')
                                                 <span style="font-size: 80%; color: #dc3545" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -134,5 +139,29 @@
 @endsection
 
 @section('scripts')
-    
+    @if($user->profile_picture)
+        <script>
+            $("#remove_profile_picture").on('click', () => {
+                if(confirm('Apakah anda yakin akan menghapus foto profil anda?')) {
+                    $.ajax({
+                        url: '{{ route("guru-account-removepropics") }}',
+                        method: 'POST',
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "profile_picture": "{{ $user->profile_picture }}"
+                        },
+                        success: (response) => {
+                            if(response.success) {
+                                console.log('Sukses');
+                                $("#remove_profile_picture").closest("div").remove();
+                                $("#profile-pics").css('background', 'url({{ asset("assets/img/profile_picture.png") }}) center / cover');
+                            } else {
+                                alert("Gagal menghapus foto profil");
+                            }
+                        }
+                    });
+                }
+            });
+        </script>
+    @endif
 @endsection

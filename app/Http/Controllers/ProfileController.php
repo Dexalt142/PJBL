@@ -55,4 +55,18 @@ class ProfileController extends Controller {
         }
     }
 
+    public function removeProfilePictures(Request $request) {
+        $res['success'] = false;
+        $user = auth()->user();
+        if($request['profile_picture'] == $user->profile_picture) {
+            Storage::disk('profile_pictures')->delete($user->profile_picture);
+            $user->profile_picture = null;
+            if($user->save()) {
+                $res['success'] = true;
+            }
+        }
+
+        return response()->json($res);
+    }
+
 }
