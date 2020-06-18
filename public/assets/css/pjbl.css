@@ -147,12 +147,15 @@ ion-icon {
 .account-dropdown {
     width: 300px;
     padding: 0;
+    box-shadow: 0 8px 24px rgba(149,157,165,.2);
+    border: 1px solid #e1e4e8;
+    border-radius: 15px;
 }
 
 .account-dropdown .profile {
     display: flex;
     padding: 1.25rem .75rem;
-    border-bottom: 1px solid rgba(0,0,0,.15);
+    border-bottom: 1px solid #e1e4e8;
 }
 
 .account-dropdown .profile .picture {
@@ -194,7 +197,7 @@ ion-icon {
 .account-dropdown .dropdown-item {
     padding-top: 10px;
     padding-bottom: 10px;
-    border-bottom: 1px solid rgba(0,0,0,.15);
+    border-bottom: 1px solid #e1e4e8;
 }
 
 .account-dropdown .dropdown-item:last-child {
