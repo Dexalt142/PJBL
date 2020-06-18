@@ -44,9 +44,9 @@ Route::middleware('auth', 'user-validated')->group(function() {
 
 Route::middleware('guru', 'user-validated')->group(function() {
     Route::get('guru', 'GuruPageController@showDashboard')->name('guru-dashboard');
-    Route::get('profile', 'GuruPageController@profilePage')->name('guru-profile');
     
     Route::prefix('guru')->group(function() {
+        Route::get('profile', 'GuruPageController@profilePage')->name('guru-profile');
         Route::get('project', 'ProjectController@showProjectPage')->name('guru-project');
         Route::get('kelas', 'KelasController@showKelasPage')->name('guru-kelas');
 
@@ -96,9 +96,9 @@ Route::middleware('siswa', 'user-validated')->group(function() {
     Route::get('siswa', function() {
         return view('siswa.dashboard');
     })->name('siswa-dashboard');
-    Route::get('profile', 'SiswaPageController@profilePage')->name('siswa-profile');
-
+    
     Route::prefix('siswa')->group(function() {
+        Route::get('profile', 'SiswaPageController@profilePage')->name('siswa-profile');
         Route::get('kelas', 'SiswaPageController@showKelasPage')->name('siswa-kelas');
         Route::get('project', 'SiswaPageController@showProjectPage')->name('siswa-project');
 

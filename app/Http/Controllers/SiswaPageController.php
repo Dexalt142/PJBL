@@ -108,4 +108,10 @@ class SiswaPageController extends Controller {
         $projects = $projects->sortByDesc('created_at');
         return view('siswa.project.project', compact('projects'));
     }
+
+    public function profilePage() {
+        $user = auth()->user();
+        $userDetail = $user->detail;
+        return view('siswa.profile', compact('user', 'userDetail'));
+    }
 }
