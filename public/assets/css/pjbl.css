@@ -144,6 +144,63 @@ ion-icon {
     left: 250px;
 }
 
+.account-dropdown {
+    width: 300px;
+    padding: 0;
+}
+
+.account-dropdown .profile {
+    display: flex;
+    padding: 1.25rem .75rem;
+    border-bottom: 1px solid rgba(0,0,0,.15);
+}
+
+.account-dropdown .profile .picture {
+    width: 85px;
+    height: 85px;
+    border: 2px solid #007bff;
+    border-radius: 50%;
+    padding: .2rem;
+}
+
+.account-dropdown .profile .picture img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.account-dropdown .profile .content {
+    margin-left: .5rem;
+}
+
+.account-dropdown .profile .content .nama {
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.account-dropdown .profile .content .email {
+    font-weight: 400;
+    margin-top: -5px;
+    color: #888;
+}
+
+.account-dropdown .profile .content .title {
+    font-size: 1.2rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.account-dropdown .dropdown-item {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,.15);
+}
+
+.account-dropdown .dropdown-item:last-child {
+    border: none;
+}
+
 .sidebar {
     position: fixed;
     background-color: #21252b;

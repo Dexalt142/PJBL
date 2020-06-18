@@ -17,14 +17,36 @@
                 <div>
                     <button class="btn btn-link" id="toggle"><span class="material-icons">menu</span></button>
                 </div>
-                @endif
-                <div class="ml-auto">
-                    
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->detail->nama_lengkap }}</a>
+                        <div class="dropdown-menu account-dropdown mr-2">
+                            <div class="profile">
+                                <div class="picture">
+                                    <img src="{{ (auth()->user()->profile_picture) ? asset('profile_pictures/'.auth()->user()->profile_picture) : asset('assets/img/profile_picture.png') }}" alt="">
+                                </div>
+                                <div class="content">
+                                    <div class="nama">{{ (strlen(auth()->user()->detail->nama_lengkap) >= 15) ? substr(auth()->user()->detail->nama_lengkap, 0, 15).'...' : auth()->user()->detail->nama_lengkap }}</div>
+                                    <div class="email">{{ auth()->user()->email }}</div>
+                                    <div class="title"><span class="badge badge-primary">{{ ucfirst(auth()->user()->user_type) }}</span></div>
+                                </div>
+                            </div>
+
+                            <a href="{{ route('siswa-profile') }}" class="dropdown-item"><ion-icon name="person-circle-outline"></ion-icon> Profile</a>
+
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item"><ion-icon name="power-outline"></ion-icon> Logout</button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+                @else
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-link">{{ (auth()->user()->detail) ? auth()->user()->detail->nama_lengkap : 'Logout' }} <ion-icon name="chevron-down-outline"></ion-icon></button>
+                        <button type="submit" class="btn btn-link">Logout</button>
                     </form>
-                </div>
+                @endif
             </div>
         </nav>
 

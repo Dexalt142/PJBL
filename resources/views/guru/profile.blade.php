@@ -204,6 +204,7 @@
                                 console.log('Sukses');
                                 $("#remove_profile_picture").closest("div").remove();
                                 $("#profile-pics").css('background', 'url({{ asset("assets/img/profile_picture.png") }}) center / cover');
+                                $(".profile").find(".picture").find("img").attr('src', "{{ asset('assets/img/profile_picture.png') }}");
                             } else {
                                 alert("Gagal menghapus foto profil");
                             }
