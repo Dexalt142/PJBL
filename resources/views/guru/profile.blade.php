@@ -16,7 +16,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="{{ route('guru-account') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('profile-account') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
                                         <div class="profile-picture">
@@ -100,35 +100,80 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title">Biodata</div>
-                        <form action="">
+                        @if (Session::has('bioUpdate'))
+                            <div class="alert alert-success">{{ Session::get('bioUpdate') }}</div>
+                        @endif
+                        <form action="{{ route('profile-bio') }}" method="POST">
+                            @csrf
                             <div class="form-group">
                                 <label for="nip">NIP</label>
-                                <input type="text" class="form-control" value="{{ $userDetail->nip }}">
+                                <input type="number" name="nip" min="0" class="form-control @error('nip') is-invalid @enderror" value="{{ $userDetail->nip }}">
+                                @error('nip')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
 
                             <div class="form-group">
-                                <label for="nama">Nama Lengkap</label>
-                                <input type="text" class="form-control" value="{{ $userDetail->nama_lengkap }}">
+                                <label for="nama_lengkap">Nama Lengkap</label>
+                                <input type="text" name="nama_lengkap" class="form-control @error('nama_lengkap') is-invalid @enderror" value="{{ $userDetail->nama_lengkap }}">
+                                @error('nama_lengkap')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
 
                             <div class="form-group">
                                 <label for="tanggal_lahir">Tanggal Lahir</label>
-                                <input type="text" class="form-control" value="{{ $userDetail->tanggal_lahir }}">
+                                <input type="date" class="form-control @error('tanggal_lahir') is-invalid @enderror" name="tanggal_lahir" value="{{ $userDetail->tanggal_lahir }}">
+                                @error('tanggal_lahir')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
 
                             <div class="form-group">
                                 <label for="jenis_kelamin">Jenis Kelamin</label>
-                                <input type="text" class="form-control" value="{{ $userDetail->jenis_kelamin }}">
+                                <select name="jenis_kelamin" class="form-control @error('jenis_kelamin') is-invalid @enderror">
+                                    <option value="1" {{ ($userDetail->jenis_kelamin == "1" ? "selected":"") }}>Laki-laki</option>
+                                    <option value="2" {{ ($userDetail->jenis_kelamin == "2" ? "selected":"") }}>Perempuan</option>
+                                </select>
+                                @error('jenis_kelamin')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>Pilihan tidak ditemukan</strong>
+                                    </span>
+                                @enderror
                             </div>
 
                             <div class="form-group">
                                 <label for="alamat">Alamat</label>
-                                <textarea class="form-control">{{ $userDetail->alamat }}</textarea>
+                                <textarea class="form-control @error('alamat') is-invalid @enderror" name="alamat">{{ $userDetail->alamat }}</textarea>
+                                @error('alamat')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>Pilihan tidak ditemukan</strong>
+                                    </span>
+                                @enderror
                             </div>
 
                             <div class="form-group">
                                 <label for="agama">Agama</label>
-                                <input type="text" class="form-control" value="{{ $userDetail->agama }}">
+                                <select name="agama" class="form-control @error('agama') is-invalid @enderror">
+                                    <option value="islam" {{ ($userDetail->agama == "islam" ? "selected":"") }}>Islam</option>
+                                    <option value="kristen" {{ ($userDetail->agama == "kristen" ? "selected":"") }}>Kristen</option>
+                                    <option value="katolik" {{ ($userDetail->agama == "katolik" ? "selected":"") }}>Katolik</option>
+                                    <option value="buddha" {{ ($userDetail->agama == "budhaa" ? "selected":"") }}>Buddha</option>
+                                    <option value="hindu" {{ ($userDetail->agama == "hindu" ? "selected":"") }}>Hindu</option>
+                                    <option value="konghucu" {{ ($userDetail->agama == "konghucu" ? "selected":"") }}>Kong Hu Cu</option>
+                                    <option value="lainnya" {{ ($userDetail->agama == "lainnya" ? "selected":"") }}>Lainnya</option>
+                                </select>
+                                @error('agama')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>Pilihan tidak ditemukan</strong>
+                                    </span>
+                                @enderror
                             </div>
 
                             <div class="form-group">
@@ -148,7 +193,7 @@
             $("#remove_profile_picture").on('click', () => {
                 if(confirm('Apakah anda yakin akan menghapus foto profil anda?')) {
                     $.ajax({
-                        url: '{{ route("guru-account-removepropics") }}',
+                        url: '{{ route("profile-account-removepropics") }}',
                         method: 'POST',
                         data: {
                             "_token": "{{ csrf_token() }}",

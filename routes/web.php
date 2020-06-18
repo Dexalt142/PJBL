@@ -31,21 +31,25 @@ Route::middleware('guest')->group(function() {
 });
 
 Route::middleware('auth')->group(function() {
-    Route::get('profile-setup', 'Auth\ProfileController@showSetupPage')->name('profile-setup');
-    Route::post('profile-setup', 'Auth\ProfileController@setupProfile')->name('profile-setup-post');
+    Route::get('profile-setup', 'ProfileController@showSetupPage')->name('profile-setup');
+    Route::post('profile-setup', 'ProfileController@setupProfile')->name('profile-setup-post');
     Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+});
+
+Route::middleware('auth', 'user-validated')->group(function() {
+    Route::post('profile/akun', 'ProfileController@updateAccount')->name('profile-account');
+    Route::post('profile/bio', 'ProfileController@updateBio')->name('profile-bio');
+    Route::post('profile/removepropics', 'ProfileController@removeProfilePictures')->name('profile-account-removepropics');
 });
 
 Route::middleware('guru', 'user-validated')->group(function() {
     Route::get('guru', 'GuruPageController@showDashboard')->name('guru-dashboard');
+    Route::get('profile', 'GuruPageController@profilePage')->name('guru-profile');
     
     Route::prefix('guru')->group(function() {
-        Route::get('profile', 'GuruPageController@profilePage')->name('guru-profile');
         Route::get('project', 'ProjectController@showProjectPage')->name('guru-project');
         Route::get('kelas', 'KelasController@showKelasPage')->name('guru-kelas');
 
-        Route::post('profile/akun', 'ProfileController@updateAccount')->name('guru-account');
-        Route::post('profile/removepropics', 'ProfileController@removeProfilePictures')->name('guru-account-removepropics');
         Route::prefix('kelas')->group(function() {
             Route::post('buat', 'KelasController@buatKelas')->name('guru-kelas-create');
             
@@ -92,6 +96,7 @@ Route::middleware('siswa', 'user-validated')->group(function() {
     Route::get('siswa', function() {
         return view('siswa.dashboard');
     })->name('siswa-dashboard');
+    Route::get('profile', 'SiswaPageController@profilePage')->name('siswa-profile');
 
     Route::prefix('siswa')->group(function() {
         Route::get('kelas', 'SiswaPageController@showKelasPage')->name('siswa-kelas');

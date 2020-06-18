@@ -43,8 +43,8 @@
                         <div class="form-group">
                             <label for="jenis_kelamin">Jenis Kelamin</label>
                             <select name="jenis_kelamin" class="form-control @error('jenis_kelamin') is-invalid @enderror">
-                                <option value="1" {{ (old("user_type") == "1" ? "selected":"") }}>Laki-laki</option>
-                                <option value="2" {{ (old("user_type") == "2" ? "selected":"") }}>Perempuan</option>
+                                <option value="1" {{ (old("jenis_kelamin") == "1" ? "selected":"") }}>Laki-laki</option>
+                                <option value="2" {{ (old("jenis_kelamin") == "2" ? "selected":"") }}>Perempuan</option>
                             </select>
                             @error('jenis_kelamin')
                                 <span class="invalid-feedback" role="alert">
@@ -66,13 +66,13 @@
                         <div class="form-group">
                             <label for="agama">Agama</label>
                             <select name="agama" class="form-control @error('agama') is-invalid @enderror">
-                                <option value="islam" {{ (old("user_type") == "islam" ? "selected":"") }}>Islam</option>
-                                <option value="kristen" {{ (old("user_type") == "kristen" ? "selected":"") }}>Kristen</option>
-                                <option value="katolik" {{ (old("user_type") == "katolik" ? "selected":"") }}>Katolik</option>
-                                <option value="buddha" {{ (old("user_type") == "budhaa" ? "selected":"") }}>Buddha</option>
-                                <option value="hindu" {{ (old("user_type") == "hindu" ? "selected":"") }}>Hindu</option>
-                                <option value="konghucu" {{ (old("user_type") == "konghucu" ? "selected":"") }}>Kong Hu Cu</option>
-                                <option value="lainnya" {{ (old("user_type") == "lainnya" ? "selected":"") }}>Lainnya</option>
+                                <option value="islam" {{ (old("agama") == "islam" ? "selected":"") }}>Islam</option>
+                                <option value="kristen" {{ (old("agama") == "kristen" ? "selected":"") }}>Kristen</option>
+                                <option value="katolik" {{ (old("agama") == "katolik" ? "selected":"") }}>Katolik</option>
+                                <option value="buddha" {{ (old("agama") == "budhaa" ? "selected":"") }}>Buddha</option>
+                                <option value="hindu" {{ (old("agama") == "hindu" ? "selected":"") }}>Hindu</option>
+                                <option value="konghucu" {{ (old("agama") == "konghucu" ? "selected":"") }}>Kong Hu Cu</option>
+                                <option value="lainnya" {{ (old("agama") == "lainnya" ? "selected":"") }}>Lainnya</option>
                             </select>
                             @error('agama')
                                 <span class="invalid-feedback" role="alert">
