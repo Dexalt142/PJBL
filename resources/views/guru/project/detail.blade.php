@@ -306,7 +306,7 @@
                     </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Buat project</button>
+                    <button type="submit" class="btn btn-primary">Buat fase</button>
                     </form>
                 </div>
             </div>
