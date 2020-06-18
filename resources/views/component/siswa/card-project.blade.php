@@ -12,13 +12,35 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <h5><ion-icon name="calendar-outline"></ion-icon> Tanggal pembuatan</h5>
-                    {{ Carbon\Carbon::parse($project->created_at)->format("d M Y H:i:s") }}
+                    <div class="info-box p-0">
+                        <div class="icon">
+                            <ion-icon name="calendar-outline"></ion-icon>
+                        </div>
+                        <div class="content">
+                            <div class="title">
+                                Tanggal Pembuatan
+                            </div>
+                            <div class="subtitle">
+                                {{ Carbon\Carbon::parse($project->created_at)->format("d M Y H:i") }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <h5><ion-icon name="albums-outline"></ion-icon> Jumlah Fase</h5>
-                    {{ $project->fase->count() }}
+                    <div class="info-box p-0">
+                        <div class="icon">
+                            <ion-icon name="albums-outline"></ion-icon>
+                        </div>
+                        <div class="content">
+                            <div class="title">
+                                Jumlah Fase
+                            </div>
+                            <div class="subtitle">
+                                {{ $project->fase->count() }} Fase
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
