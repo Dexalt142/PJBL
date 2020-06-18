@@ -68,7 +68,7 @@ class ProfileController extends Controller {
     public function updateAccount(Request $request) {
         $user = auth()->user();
         $validated = $request->validate([
-            'profile_picture' => ['nullable', 'sometimes', 'mimes:jpeg,jpg,png'],
+            'profile_picture' => ['nullable', 'sometimes', 'mimes:jpeg,jpg,png', 'max:2048'],
             'email' => ['email', 'required', 'string'],
             'password' => ['nullable', 'string'],
             'new_password' => ['nullable', 'string', 'min:8', 'confirmed']
