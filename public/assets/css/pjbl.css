@@ -150,6 +150,7 @@ ion-icon {
     box-shadow: 0 8px 24px rgba(149,157,165,.2);
     border: 1px solid #e1e4e8;
     border-radius: 15px;
+    overflow: hidden;
 }
 
 .account-dropdown .profile {
@@ -370,20 +371,16 @@ ion-icon {
     min-height: 150px;
 }
 
+.card-kelas {
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, .05);
+}
+
 .row-kelas .card-wrapper:nth-child(5n+1) .card-kelas .card-footer {
     background: linear-gradient(135deg, #da22ff, #9733ee);
 }
 
-.row-kelas .card-wrapper:nth-child(5n+1) .card-kelas {
-    box-shadow: 0px 4px 15px rgba(218, 34, 255, .5);
-}
-
 .row-kelas .card-wrapper:nth-child(5n+2) .card-kelas .card-footer {
     background: linear-gradient(135deg, #1488cc, #2b32b2);
-}
-
-.row-kelas .card-wrapper:nth-child(5n+2) .card-kelas {
-    box-shadow: 0px 4px 15px rgba(20, 136, 204, .5);
 }
 
 .row-kelas .card-wrapper:nth-child(5n+3) .card-kelas .card-footer {
@@ -391,25 +388,12 @@ ion-icon {
 
 }
 
-.row-kelas .card-wrapper:nth-child(5n+3) .card-kelas {
-    box-shadow: 0px 4px 15px rgba(255, 75, 31, .5);
-}
-
 .row-kelas .card-wrapper:nth-child(5n+4) .card-kelas .card-footer {
     background: linear-gradient(135deg, #a8e063, #56ab2f);
-
-}
-
-.row-kelas .card-wrapper:nth-child(5n+4) .card-kelas {
-    box-shadow: 0px 4px 15px rgba(145, 209, 84, .5);
 }
 
 .row-kelas .card-wrapper:nth-child(5n+5) .card-kelas .card-footer {
     background: linear-gradient(135deg, #ff512f, #dd2476);
-}
-
-.row-kelas .card-wrapper:nth-child(5n+5) .card-kelas {
-    box-shadow: 0px 4px 15px rgba(224, 41, 110, .5);
 }
 
 .modal-content {
