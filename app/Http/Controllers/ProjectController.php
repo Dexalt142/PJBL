@@ -88,7 +88,7 @@ class ProjectController extends Controller {
             'materi' => ['required', 'string'],
             'fase_type' => ['required', 'string', 'regex:(materi|tes)'],
             'deadline' => ['required', 'date'],
-            'fileMateri.*' => ['nullable', 'sometimes', 'mimes:docx,doc,pptx,ppt,pdf,rar,zip'],
+            'fileMateri.*' => ['nullable', 'sometimes', 'mimes:docx,doc,pptx,ppt,pdf,rar,zip', 'max:10240'],
         ]);
 
         $kelas = $this->getKelas($kelas);
@@ -133,7 +133,7 @@ class ProjectController extends Controller {
             'materi' => ['required', 'string'],
             'fase_type' => ['required', 'string', 'regex:(materi|tes)'],
             'deadline' => ['required', 'date'],
-            'fileMateri.*' => ['nullable', 'sometimes', 'mimes:docx,doc,pptx,ppt,pdf,rar,zip'],
+            'fileMateri.*' => ['nullable', 'sometimes', 'mimes:docx,doc,pptx,ppt,pdf,rar,zip', 'max:10240'],
         ]);
 
         $kelas = $this->getKelas($kelas);
@@ -232,7 +232,7 @@ class ProjectController extends Controller {
             'fase_id' => ['integer', 'exists:fase,id'],
             'kelompok_id' => ['integer', 'exists:kelompok,id'],
             'jawaban' => ['nullable', 'sometimes', 'string'],
-            'jawaban_file' => ['nullable', 'sometimes', 'mimes:docx,doc,pptx,ppt,pdf,rar,zip'],
+            'jawaban_file' => ['nullable', 'sometimes', 'mimes:docx,doc,pptx,ppt,pdf,rar,zip', 'max:10240'],
         ]);
         
 

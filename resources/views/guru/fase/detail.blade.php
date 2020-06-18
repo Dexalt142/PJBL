@@ -37,7 +37,11 @@
 
                 @error ('fileMateri.*')    
                     <div class="col-12">
-                        <div class="alert alert-danger">File yang dapat diupload hanya docx, doc, pptx, pdf, rar, zip.</div>
+                        @if (Str::contains($message, "must be a file of type"))
+                            <div class="alert alert-danger">File yang dapat diupload hanya docx, doc, pptx, pdf, rar, zip.</div>
+                        @elseif(Str::contains($message, "kilobytes"))
+                            <div class="alert alert-danger">Ukuran file maksimal adalah 10MB.</div>
+                        @endif
                     </div>
                 @enderror
             </div>
@@ -95,7 +99,7 @@
                                 <div id="uploadFileMateri" style="display: none">
                                     <hr>
                                     <div class="form-group mb-0">
-                                        <label for="">Upload file materi</label>
+                                        <label for="">Upload file materi (max. 10MB)</label>
                                     </div>
 
                                     <div class="form-group" id="fileMateri">

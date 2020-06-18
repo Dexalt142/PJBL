@@ -293,7 +293,11 @@
                             <input type="file" class="form-control @error('fileMateri.*') is-invalid @enderror" name="fileMateri[]">
                             @error('fileMateri.*')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>File yang dapat diupload hanya docx, doc, pptx, pdf, rar, zip.</strong>
+                                    @if (Str::contains($message, "must be a file of type"))
+                                        <strong>File yang dapat diupload hanya docx, doc, pptx, pdf, rar, zip.</strong>
+                                        @elseif(Str::contains($message, "kilobytes"))
+                                        <strong>Ukuran file maksimal adalah 10MB.</strong>
+                                    @endif
                                 </span>
                             @enderror
                         </div>
