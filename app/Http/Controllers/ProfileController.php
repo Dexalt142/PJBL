@@ -47,11 +47,11 @@ class ProfileController extends Controller {
                 return redirect()->back()->withErrors(['password' => 'Password anda salah.']);
             }
 
-            $user->password = Hash::make($validated['password']);
+            $user->password = Hash::make($validated['new_password']);
         }
         
         if($user->save()) {
-            return redirect()->back();
+            return redirect()->back()->with('accountUpdate', 'Perubahan berhasil disimpan');
         }
     }
 

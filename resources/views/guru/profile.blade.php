@@ -37,6 +37,10 @@
                                         </div>
                                     </div>
 
+                                    @if (Session::has('accountUpdate'))
+                                        <div class="alert alert-success">{{ Session::get('accountUpdate') }}</div>
+                                    @endif
+
                                     <div class="form-group">
                                         <label for="">Email</label>
                                         <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ $user->email }}" required>
