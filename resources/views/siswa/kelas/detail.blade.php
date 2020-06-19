@@ -11,7 +11,7 @@
             Pengaturan
         </button>
         <div class="dropdown-menu" aria-labelledby="kelasMenuButton">
-            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#keluarKelasModal">Keluar</a>
+            <button class="dropdown-item" href="#" data-toggle="modal" data-target="#keluarKelasModal">Keluar</button>
         </div>
     </div>
 @endsection
@@ -80,6 +80,27 @@
         </section>
     </div>
 
+    <div class="modal fade" id="keluarKelasModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Keluar kelas</h5>
+                </div>
+                <div class="modal-body">
+                    Apakah anda yakin akan keluar dari kelas ini?
+                </div>
+                
+                <div class="modal-footer">
+                    <form action="{{ route("siswa-kelas-leave") }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="kode_kelas" value="{{ $kelas->kode_kelas }}">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Keluar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 

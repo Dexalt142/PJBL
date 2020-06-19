@@ -105,6 +105,7 @@ Route::middleware('siswa', 'user-validated')->group(function() {
         Route::prefix('kelas')->group(function() {
             Route::get('{kelas}', 'SiswaPageController@viewKelas')->name('siswa-kelas-detail');
             Route::post('gabung', 'KelasController@gabungKelas')->name('siswa-kelas-join');
+            Route::post('keluar', 'KelasController@keluarKelas')->name('siswa-kelas-leave');
 
             Route::prefix('{kelas}')->group(function() {
                 Route::get('{project_id}', 'SiswaPageController@viewProject')->name('siswa-project-detail');

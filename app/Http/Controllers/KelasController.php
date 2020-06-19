@@ -116,6 +116,23 @@ class KelasController extends Controller {
         }
     }
 
+    public function keluarKelas(Request $request) {
+        $validated = $request->validate([
+            'kode_kelas' => ['required', 'string'],
+        ]);
+        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $validated['kode_kelas'])->first();
+        if($kelas) {
+            foreach($kelas->siswa as $siswa) {
+                if($siswa->id == auth()->user()->detail->id) {
+                    DB::table('kelas_siswa')->where(['id' => $siswa->pivot->id])->delete();
+                    return redirect()->route('siswa-dashboard');
+                }
+            }
+        }
+
+        return redirect()->back();
+    }
+
     public function hapusSiswa(Request $request, $kelas) {
         $res = ['success' => false];
         $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
