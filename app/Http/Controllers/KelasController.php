@@ -110,7 +110,7 @@ class KelasController extends Controller {
             'kode_kelas' => ['required', 'string'],
         ]);
 
-        $kelas = $this->getKelas($validated['kode_kelas']);
+        $kelas = Kelas::where('kode_kelas', $validated['kode_kelas'])->first();
         if($kelas) {
             if(!$kelas->siswa->contains(auth()->user()->detail)) {
                 $kelas->siswa()->attach(auth()->user()->detail, ['tanggal_masuk' => Carbon::now()]);
