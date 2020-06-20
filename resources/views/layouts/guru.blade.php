@@ -17,7 +17,9 @@
                 <div>
                     <button class="btn btn-link" id="toggle"><span class="material-icons">menu</span></button>
                 </div>
+                @endif
                 <ul class="navbar-nav ml-auto">
+                @if (auth()->user()->detail)
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->detail->nama_lengkap }}</a>
                         <div class="dropdown-menu account-dropdown mr-2">
@@ -40,13 +42,13 @@
                             </form>
                         </div>
                     </li>
-                </ul>
                 @else
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-link">Logout</button>
-                    </form>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-link">Logout</button>
+                </form>
                 @endif
+                </ul>
             </div>
         </nav>
 
