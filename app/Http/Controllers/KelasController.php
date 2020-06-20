@@ -16,6 +16,10 @@ class KelasController extends Controller {
         return view('guru.kelas.kelas', compact('listKelas'));
     }
     
+    private function getKelas($kode_kelas) {
+        return auth()->user()->detail->kelas->where('kode_kelas', $kode_kelas)->first();
+    }
+
     public function buatKelas(Request $request) {
         $validated = $request->validate([
             'nama_kelas' => ['required', 'string', 'min:5'],
@@ -36,12 +40,12 @@ class KelasController extends Controller {
             'nama_kelas' => ['required', 'string', 'min:5'],
         ]);
 
-        $k = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
-        if($k) {
-            $k->nama = $validated['nama_kelas'];
+        $kelas = $this->getKelas($kelas);
+        if($kelas) {
+            $kelas->nama = $validated['nama_kelas'];
     
-            if($k->save()) {
-                return redirect()->route('guru-kelas-detail', $kelas);
+            if($kelas->save()) {
+                return redirect()->route('guru-kelas-detail', $kelas->kode_kelas);
             }
         }
 
@@ -53,7 +57,7 @@ class KelasController extends Controller {
             'kode_kelas' => ['required', 'string'],
         ]);
 
-        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $request->kode_kelas)->first();
+        $kelas = $this->getKelas($kelas);
         if($kelas) {
             $kelas->delete();
         }
@@ -66,14 +70,16 @@ class KelasController extends Controller {
             'kode_kelas' => ['required', 'string'],
         ]);
 
-        $k = Kelas::where(['kode_kelas' => $kelas])->firstOrFail();
-        $k->kode_kelas = Str::random(8);
-
-        if($k->save()) {
-            return response()->json(['success' => 'true', 'kode_kelas' => $k->kode_kelas]);
-        } else {
-            return response()->json(['success' => 'false']);
+        $kelas = $this->getKelas($validated['kode_kelas']);
+        if($kelas) {
+            $kelas->kode_kelas = Str::random(8);
+    
+            if($kelas->save()) {
+                return response()->json(['success' => 'true', 'kode_kelas' => $kelas->kode_kelas]);
+            }
         }
+
+        return response()->json(['success' => 'false']);
     }
 
     public function undangSiswa(Request $request) {
@@ -84,7 +90,8 @@ class KelasController extends Controller {
 
         $siswa = User::where(['email' => $validated['email_siswa'], 'user_type' => 'siswa'])->first();
         if($siswa) {
-            if(!Kelas::find($validated['kelas_id'])->siswa->contains('id', $siswa->detail->id)) {
+            $kelas = auth()->user()->detail->kelas->where('id', $validated['kelas_id'])->first();
+            if(!$kelas->siswa->contains('id', $siswa->detail->id)) {
                 $save = DB::table('kelas_siswa')->insert(['kelas_id' => $validated['kelas_id'], 'siswa_id' => $siswa->detail->id, 'tanggal_masuk' => Carbon::now()->toDateTimeString()]);
                 if($save) {
                     return redirect()->to($request->r);
@@ -103,7 +110,7 @@ class KelasController extends Controller {
             'kode_kelas' => ['required', 'string'],
         ]);
 
-        $kelas = Kelas::where(['kode_kelas' => $validated['kode_kelas']])->first();
+        $kelas = $this->getKelas($validated['kode_kelas']);
         if($kelas) {
             if(!$kelas->siswa->contains(auth()->user()->detail)) {
                 $kelas->siswa()->attach(auth()->user()->detail, ['tanggal_masuk' => Carbon::now()]);
@@ -120,7 +127,7 @@ class KelasController extends Controller {
         $validated = $request->validate([
             'kode_kelas' => ['required', 'string'],
         ]);
-        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $validated['kode_kelas'])->first();
+        $kelas = $this->getKelas($validated['kode_kelas']);
         if($kelas) {
             foreach($kelas->siswa as $siswa) {
                 if($siswa->id == auth()->user()->detail->id) {
@@ -135,7 +142,7 @@ class KelasController extends Controller {
 
     public function hapusSiswa(Request $request, $kelas) {
         $res = ['success' => false];
-        $kelas = auth()->user()->detail->kelas->where('kode_kelas', $kelas)->first();
+        $kelas = $this->getKelas($kelas);
         if($kelas) {
             foreach($kelas->siswa as $siswa) {
                 if($siswa->pivot->id == $request->siswa) {
