@@ -118,6 +118,5 @@ Route::middleware('siswa', 'user-validated')->group(function() {
             });
         });
 
-
     });
 });
