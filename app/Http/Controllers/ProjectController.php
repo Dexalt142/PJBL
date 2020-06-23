@@ -234,31 +234,37 @@ class ProjectController extends Controller {
             'jawaban' => ['nullable', 'sometimes', 'string'],
             'jawaban_file' => ['nullable', 'sometimes', 'mimes:docx,doc,pptx,ppt,pdf,rar,zip', 'max:10240'],
         ]);
+
+        $fa = Fase::where('id', $validated['fase_id'])->first();
+        if($fa) {
+            if($fa->deadline->greaterThan(now())) {
+                $validated['status'] = 1;
+                $fk = FaseKelompok::where(['fase_id' => $validated['fase_id'], 'kelompok_id' => $validated['kelompok_id']])->first();
+                if($fk) {
+                    if($request->file('jawaban_file')) { 
+                        $filename = Str::random(10).'_'.ProjectController::sanitize($request->file('jawaban_file')->getClientOriginalName());
+                        $path = Storage::disk('answer_files')->putFileAs('', $request->file('jawaban_file'), $filename);
+            
+                        $fk->jawaban_file = $filename;
+                    }
+                    $fk->jawaban = $validated['jawaban'];
+                    $fk->save();
+                } else {
+                    if($request->file('jawaban_file')) {
+                        $filename = Str::random(10).'_'.ProjectController::sanitize($request->file('jawaban_file')->getClientOriginalName());
+                        $path = Storage::disk('answer_files')->putFileAs('', $request->file('jawaban_file'), $filename);
+            
+                        $validated['jawaban_file'] = $filename;
+                    }
         
-
-        $validated['status'] = 1;
-        $fk = FaseKelompok::where(['fase_id' => $validated['fase_id'], 'kelompok_id' => $validated['kelompok_id']])->first();
-        if($fk) {
-            if($request->file('jawaban_file')) { 
-                $filename = Str::random(10).'_'.ProjectController::sanitize($request->file('jawaban_file')->getClientOriginalName());
-                $path = Storage::disk('answer_files')->putFileAs('', $request->file('jawaban_file'), $filename);
-    
-                $fk->jawaban_file = $filename;
+                    FaseKelompok::create($validated);
+                }
+        
+                return redirect()->back()->with('jawabanSuccess', true);
             }
-            $fk->jawaban = $validated['jawaban'];
-            $fk->save();
-        } else {
-            if($request->file('jawaban_file')) {
-                $filename = Str::random(10).'_'.ProjectController::sanitize($request->file('jawaban_file')->getClientOriginalName());
-                $path = Storage::disk('answer_files')->putFileAs('', $request->file('jawaban_file'), $filename);
-    
-                $validated['jawaban_file'] = $filename;
-            }
-
-            FaseKelompok::create($validated);
         }
-
-        return redirect()->back()->with('jawabanSuccess', true);
+        
+        return redirect()->back()->with('jawabanSuccess', false);
     }
 
     public function nilaiFase($kelas, $project, $fase, Request $request) {

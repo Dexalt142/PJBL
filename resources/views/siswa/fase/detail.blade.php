@@ -67,7 +67,11 @@
                                     <div class="alert alert-danger">Masa pengerjaan sudah habis</div>
                                 @endif
                                 @if(Session::has('jawabanSuccess'))
-                                    <div class="alert alert-success">Jawaban berhasil dikirim</div>
+                                    @if ( Session::get('jawabanSuccess') == true)
+                                        <div class="alert alert-success">Jawaban berhasil dikirim</div>
+                                    @else
+                                        <div class="alert alert-danger">Gagal mengumpulkan jawaban</div>
+                                    @endif
                                 @endif
 
                                 <div class="form-group">
